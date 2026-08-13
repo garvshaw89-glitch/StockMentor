@@ -8,7 +8,7 @@ Instead of simply telling users what a financial concept means, StockMentor teac
 
 > 🧠 **Learn → Practice → Analyze → Simulate → Test → Improve → Master**
 
-APP LINK: https://stock-mentortutor.vercel.app/
+Live Demo: https://stock-mentortutor.vercel.app/
 
 ---
 
