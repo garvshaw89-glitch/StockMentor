@@ -33,11 +33,11 @@ export const Navigation: React.FC<NavigationProps> = ({ activeTab, setActiveTab 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navItems: { id: TabType; label: string; icon: React.ReactNode; category: string }[] = [
+    { id: "profile", label: "Profile", icon: <User className="w-4 h-4" />, category: "Core" },
     { id: "home", label: "Home", icon: <Home className="w-4 h-4" />, category: "Core" },
     { id: "learn", label: "University & Learn", icon: <BookOpen className="w-4 h-4" />, category: "Core" },
     { id: "simulator", label: "Paper Trading", icon: <TrendingUp className="w-4 h-4" />, category: "Core" },
     { id: "portfolio", label: "Portfolio", icon: <PieChart className="w-4 h-4" />, category: "Core" },
-    { id: "profile", label: "Profile", icon: <User className="w-4 h-4" />, category: "Core" },
     
     { id: "become-analyst", label: "30-Min Analyst Exam", icon: <Award className="w-4 h-4 text-amber-400" />, category: "Exams & Sims" },
     { id: "candle-replay", label: "Chart Replay", icon: <Play className="w-4 h-4 text-emerald-400" />, category: "Interactive Labs" },
@@ -57,7 +57,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeTab, setActiveTab 
     { id: "charts", label: "Charts Lab", icon: <LineChart className="w-4 h-4" />, category: "Interactive Labs" },
   ];
 
-  const primaryMobileTabs: TabType[] = ["home", "learn", "simulator", "portfolio", "profile"];
+  const primaryMobileTabs: TabType[] = ["profile", "home", "learn", "simulator", "portfolio"];
 
   const handleMobileTabClick = (id: TabType) => {
     setActiveTab(id);
