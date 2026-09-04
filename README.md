@@ -708,7 +708,7 @@ StockMentor
 ## 1. Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/stockmentor.git
+git clone https://github.com/garvshaw89-glitch/stockmentor.git
 cd stockmentor
 ```
 
