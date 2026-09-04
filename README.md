@@ -725,7 +725,7 @@ Create a `.env.local` file:
 ```env
 AI_API_KEY=your_api_key
 MARKET_DATA_API_KEY=your_api_key
-DATABASE_URL=your_database_url
+DATABASE_URL=(https://stock-mentortutor.vercel.app/)
 ```
 
 Never commit secrets or API keys to GitHub.
