@@ -53,7 +53,7 @@ Instead of immediately giving a textbook definition:
 
 The AI progressively guides the learner toward understanding the concept.
 
-### AI Modes
+### AI Mode
 
 - 🧠 Socratic Mode
 - 👶 Explain Like I'm 5
