@@ -4,7 +4,7 @@
 
 StockMentor is an interactive AI-powered financial education platform designed to help beginners and aspiring traders understand the stock market through **Socratic learning, real-world scenarios, interactive charts, quizzes, simulations, and personalized feedback**.
 
-Instead of simply telling users what a financial concept means, StockMentor teaches them **how to think about it**.
+Instead of simply telling users what a financial concept means, StockMentor teaches them **how to think about it**
 
 > 🧠 **Learn → Practice → Analyze → Simulate → Test → Improve → Master**
 
