@@ -131,7 +131,7 @@ graph TD
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/stock-mentor.git
+git clone https://github.com/garvshaw89-glitch/stock-mentor.git
 cd stock-mentor
 ```
 
