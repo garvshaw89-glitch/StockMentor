@@ -1,915 +1,211 @@
-# 📈 StockMentor
+<div align="center">
 
-### The Socratic AI-Powered Stock Market Learning Platform
+# 📈 StockMentor AI — Socratic Market Intelligence & Trading University
 
-StockMentor is an interactive AI-powered financial education platform designed to help beginners and aspiring traders understand the stock market through **Socratic learning, real-world scenarios, interactive charts, quizzes, simulations, and personalized feedback**.
+<p align="center">
+  <a href="https://stock-mentortutor.vercel.app/">
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&pause=1200&color=10B981&center=true&vCenter=true&width=750&lines=StockMentor+AI+%E2%80%94+Socratic+Market+Intelligence;Master+Equities%2C+Technical+Charts+%26+Derivatives;Powered+by+Google+Gemini+3.7+Flash;Live+Project%3A+https%3A%2F%2Fstock-mentortutor.vercel.app%2F;Interactive+Paper+Trading+%26+Market+Crash+Labs" alt="Typing SVG" />
+  </a>
+</p>
 
-Instead of simply telling users what a financial concept means, StockMentor teaches them **how to think about it**
+[![Live Demo](https://img.shields.io/badge/Live_Project-stock--mentortutor.vercel.app-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://stock-mentortutor.vercel.app/)
+[![Gemini 3.7 Flash](https://img.shields.io/badge/AI_Engine-Gemini_3.7_Flash-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
+[![React](https://img.shields.io/badge/React-18.3-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
-> 🧠 **Learn → Practice → Analyze → Simulate → Test → Improve → Master**
+<br/>
 
-Live Demo: https://stock-mentortutor.vercel.app/
+### 🌐 **Live Application**
+### 👉 **[https://stock-mentortutor.vercel.app/](https://stock-mentortutor.vercel.app/)** 👈
 
----
-
-## 🚀 Why StockMentor?
-
-Traditional financial platforms often overwhelm beginners with:
-
-- Complex financial terminology
-- Dense research reports
-- Complicated charts
-- Too much information at once
-- Little practical learning
-- No personalized feedback
-
-StockMentor solves this by combining:
-
-**AI Tutor + Finance Curriculum + Interactive Charts + Trading Simulator + Exams + Stock Research + Gamification**
-
-The goal is not to tell users what stocks to buy.
-
-The goal is to teach users **how to analyze markets and make informed decisions themselves**.
+*Experience interactive Socratic tutoring, real-time technical chart breakdowns, and live market paper trading in your browser.*
 
 ---
 
-# ✨ Core Features
+</div>
 
-## 🤖 AI Socratic Mentor
+## 📌 Executive Summary
 
-StockMentor uses an AI tutor that teaches through guided questions instead of simply giving answers.
-
-For example:
-
-**User:**
-
-> What is P/E ratio?
-
-Instead of immediately giving a textbook definition:
-
-**StockMentor:**
-
-> Imagine two shops earning the same amount of money. One costs ₹10 lakh and the other costs ₹20 lakh. Which one are you paying more for?
-
-The AI progressively guides the learner toward understanding the concept.
-
-### AI Mode
-
-- 🧠 Socratic Mode
-- 👶 Explain Like I'm 5
-- 📚 Beginner Mode
-- 📊 Analyst Mode
-- 🎓 Exam Mode
-- ⚔️ Challenge My Thesis
-- 🐂 Bull vs Bear Debate
-- 🔍 Research Assistant
+**StockMentor AI** is an institutional-grade financial education ecosystem and interactive trading laboratory. Powered by **Google Gemini 3.7 Flash**, StockMentor shifts retail investors from passive rote learning into active deductive mastery through Socratic questioning, real-time technical chart breakdowns, behavioral trading journals, and risk-calibrated crash simulations.
 
 ---
 
-# 📚 Comprehensive Finance Curriculum
+## 🌟 Key Highlights & Feature Matrix
 
-StockMentor is designed around a large structured curriculum covering beginner to professional concepts.
-
-### Major Categories
-
-- Stock Market Basics
-- Fundamental Analysis
-- Technical Analysis
-- Trading
-- Investing
-- Risk Management
-- Portfolio Management
-- ETFs
-- Mutual Funds
-- Bonds
-- Fixed Income
-- Futures
-- Options
-- Commodities
-- Forex
-- REITs
-- InvITs
-- Money Markets
-- Credit Markets
-- Capital Markets
-- Quantitative Finance
-- Global Markets
-- Investment Banking
-
-### Learning Levels
-
-```text
-Beginner
-   ↓
-Intermediate
-   ↓
-Advanced
-   ↓
-Professional
-Absolutely — here is a **professional GitHub README** you can use for your StockMentor project. It is written to make the project look like a serious startup/portfolio project rather than a basic college app.
-
----
-
-# 📝 AI-Powered Tests & Exams
-
-After completing a topic, users can take an adaptive test to determine how well they actually understand it.
-
-### Example
-
-After learning:
-
-**P/E Ratio**
-
-StockMentor can test:
-
-* Definition
-* Formula
-* Interpretation
-* Practical application
-* Comparison
-* Scenario analysis
-* Common mistakes
-
-The system generates a **Mastery Score**.
-
-Example:
-
-```text
-P/E Ratio
-
-Concept Understanding     92%
-Practical Application     81%
-Scenario Analysis         74%
-Overall Mastery           83%
-```
-
-Weak areas automatically become recommended revision topics.
+<table>
+  <tr>
+    <td width="50%">
+      <h3>🧠 Socratic AI Tutor</h3>
+      <ul>
+        <li><b>3 Pedagogical Modes:</b> 🧒 ELI5 (intuitive analogies), 🟢 Simple (practical definitions), and 🔷 Professional (quant & institutional metrics).</li>
+        <li><b>Interactive Diagrams:</b> Dynamic visualizations for candlesticks, breakouts, P/E ratios, cash flows, and order books.</li>
+        <li><b>Context-Aware Memory:</b> Maintains dialogue state across multi-turn trading analyses.</li>
+      </ul>
+    </td>
+    <td width="50%">
+      <h3>📊 Technical Chart & Pattern Lab</h3>
+      <ul>
+        <li><b>Multi-Timeframe Engine:</b> 1D, 1W, 1M, and 1Y charts with responsive indicators.</li>
+        <li><b>Technical Overlays:</b> 20 SMA, 50 EMA, 14 RSI, and Volume Profile distribution.</li>
+        <li><b>AI Chart Explainer:</b> Instant technical thesis generated directly by Gemini 3.7 Flash.</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <h3>💼 Real-Time Paper Trading</h3>
+      <ul>
+        <li><b>₹10,00,000 Virtual Capital:</b> Realistic execution simulation for long & short positions.</li>
+        <li><b>Automated P&L & Margins:</b> Real-time mark-to-market calculations and portfolio weighting.</li>
+        <li><b>Trade Execution History:</b> Complete timestamped audit trail with return analytics.</li>
+      </ul>
+    </td>
+    <td width="50%">
+      <h3>🌪️ Market Survival & Crash Labs</h3>
+      <ul>
+        <li><b>Historical Crises:</b> Relive the 2008 Financial Crisis, 2020 Covid Flash Crash, and Dot-com bubble.</li>
+        <li><b>Decision Points:</b> Test risk tolerance under extreme volatility and liquidity crunches.</li>
+        <li><b>Capital Preservation Metrics:</b> Measure Max Drawdown, Sharpe Ratio, and recovery speed.</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <h3>🔬 Equity Research Terminal</h3>
+      <ul>
+        <li><b>7-Part Institutional Breakdown:</b> Moat analysis, ROIC, margin trajectories, bull/bear cases.</li>
+        <li><b>Structured JSON Generation:</b> Type-safe financial data extraction via Gemini 3.7 Flash.</li>
+        <li><b>Investor Checklist:</b> Actionable criteria prior to deploying simulated capital.</li>
+      </ul>
+    </td>
+    <td width="50%">
+      <h3>🧬 Behavioral DNA & Journal</h3>
+      <ul>
+        <li><b>Cognitive Bias Detection:</b> Flags FOMO entries, revenge trading, and premature profit-taking.</li>
+        <li><b>Strategy DNA Profiler:</b> Uncovers your highest win-rate setups and optimal holding times.</li>
+        <li><b>Continuous Diagnostics:</b> Highlights weak topics for focused revision.</li>
+      </ul>
+    </td>
+  </tr>
+</table>
 
 ---
 
-# 📊 Live Trading Learning Simulator
+## 🚀 Live Demo & Quick Launch
 
-StockMentor includes an educational trading environment using **virtual money**.
-
-Users can practice:
-
-* Market orders
-* Limit orders
-* Buy/Sell decisions
-* Stop-loss
-* Take-profit
-* Position sizing
-* Risk/reward
-* Trade management
-
-### Important
-
-This is an **educational simulator**, not a real-money brokerage system.
-
----
-
-# 🎯 "What Happens Next?" Mode
-
-One of StockMentor's key learning features.
-
-The chart moves in real time.
-
-Then:
-
-```text
-⏸️ CHART FROZEN
-```
-
-Future candles are hidden.
-
-The learner must predict the most likely scenario:
-
-* Bullish continuation
-* Bearish continuation
-* Breakout
-* Breakdown
-* Pullback
-* Reversal
-* Consolidation
-* No Trade
-
-The learner then selects:
-
-```text
-Entry
-Stop Loss
-Target
-Risk/Reward
-Reason
-```
-
-The simulator reveals the next candles.
-
-StockMentor then evaluates the learner's reasoning.
-
----
-
-# 📈 Interactive Chart Learning
-
-The chart can support educational technical-analysis tools such as:
-
-* Candlestick charts
-* Line charts
-* Volume
-* SMA
-* EMA
-* VWAP
-* RSI
-* MACD
-* Bollinger Bands
-* ATR
-* ADX
-* Supertrend
-* Fibonacci Retracement
-* Support/Resistance
-* Trendlines
-* Volume Profile
-
-Indicators are progressively unlocked as users advance through the curriculum.
-
----
-
-# 🔄 Historical Market Replay
-
-Users can practice historical market conditions without seeing future candles.
-
-The learner can:
-
-1. Analyze the current chart
-2. Make a decision
-3. Place a simulated trade
-4. Move forward one candle
-5. Review what happened
-6. Adjust their strategy
-
-This turns historical market data into an interactive learning environment.
-
----
-
-# 🧪 Stock Research Lab
-
-Users can research companies and build their own investment thesis.
-
-### Research includes:
-
-* Company overview
-* Revenue
-* Profit
-* EPS
-* ROE
-* ROCE
-* Debt
-* Cash flow
-* Valuation
-* Growth
-* Industry
-* Competitors
-* Management
-* Risks
-* Catalysts
-* Technical analysis
-
----
-
-# 🧑‍💼 "Become the Analyst" Exam
-
-A major advanced-learning feature.
-
-The user receives:
-
-```text
-Company Data
-Financial Statements
-Charts
-News
-Industry Data
-Competitor Data
-Valuation Data
-```
-
-They must produce:
-
-* Business analysis
-* Fundamental analysis
-* Technical analysis
-* Risk analysis
-* Bull case
-* Bear case
-* Valuation
-* Investment thesis
-
-The AI then evaluates the submission.
-
-Example:
-
-```text
-StockMentor Analyst Score
-
-Research              91/100
-Fundamentals          88/100
-Technical Analysis    76/100
-Risk Management       84/100
-Reasoning             93/100
-Valuation             82/100
-
-Overall                87/100
-```
-
----
-
-# ⚔️ Bull vs Bear AI
-
-Users can submit an investment thesis.
-
-StockMentor creates two opposing perspectives.
-
-### 🐂 Bull Analyst
-
-Explains why the investment could succeed.
-
-### 🐻 Bear Analyst
-
-Attempts to disprove the thesis.
-
-The learner then decides which argument is stronger.
-
-This helps develop critical thinking and prevents confirmation bias.
-
----
-
-# 🧠 AI Devil's Advocate
-
-Users can activate:
-
-> **Challenge My Analysis**
-
-The AI actively looks for:
-
-* Missing information
-* Weak assumptions
-* Valuation problems
-* Financial risks
-* Technical contradictions
-* Confirmation bias
-* Overconfidence
-* Alternative explanations
-
----
-
-# 📓 AI Trading Journal
-
-Every simulated trade can be recorded automatically.
-
-Example:
-
-```text
-Trade #024
-
-Stock: XYZ
-Entry: ₹500
-Stop Loss: ₹475
-Target: ₹550
-
-Reason:
-Breakout + Volume Confirmation
-
-Result:
-+₹4,250
-```
-
-AI evaluates:
-
-* Entry quality
-* Risk management
-* Strategy adherence
-* Exit quality
-* Emotional decision patterns
-* Repeated mistakes
-
----
-
-# 🧬 Personal Trading DNA
-
-After enough simulations, StockMentor builds a behavioral profile.
-
-Example:
-
-```text
-Your Trading DNA
-
-Preferred Style:
-Swing Trading
-
-Strongest Skill:
-Trend Identification
-
-Weakest Skill:
-Risk Management
-
-Common Mistake:
-Late Entries
-
-Average Risk:
-1.8% per trade
-
-Best Setup:
-Breakouts with Volume
-```
-
-The system then creates personalized exercises.
-
----
-
-# 🎮 Gamification
-
-StockMentor turns financial education into a progression system.
-
-### XP
-
-Users earn experience points for:
-
-* Completing lessons
-* Passing quizzes
-* Completing simulations
-* Researching companies
-* Correctly identifying chart patterns
-* Maintaining learning streaks
-
-### Achievements
-
-🏅 First Stock Analysis
-
-📊 100 Chart Challenges
-
-🧠 Fundamental Master
-
-🛡️ Risk Manager
-
-🔥 30-Day Learning Streak
-
-📚 100 Topics Completed
-
----
-
-# 🏆 Analyst Levels
-
-Users can progress through:
-
-```text
-Level 1
-Market Explorer
-
-Level 2
-Market Learner
-
-Level 3
-Investor
-
-Level 4
-Technical Analyst
-
-Level 5
-Fundamental Analyst
-
-Level 6
-Trader
-
-Level 7
-Portfolio Analyst
-
-Level 8
-Advanced Market Analyst
-
-Level 9
-Professional Analyst
-```
-
----
-
-# 💼 Portfolio Simulator
-
-Users receive virtual capital and build portfolios.
-
-Track:
-
-* Portfolio value
-* Returns
-* P&L
-* Allocation
-* Sector exposure
-* Risk
-* Drawdown
-* Diversification
-* Performance
-
----
-
-# 🧪 Portfolio Stress Testing
-
-Simulate scenarios such as:
-
-* Market crash
-* Recession
-* Interest-rate hike
-* Inflation spike
-* Oil shock
-* Currency movement
-* High volatility
-
-Users can observe how different portfolios behave under different scenarios.
-
----
-
-# 🔍 Stock Screener
-
-Users can create custom filters.
-
-Example:
-
-```text
-Market Cap > ₹10,000 Cr
-ROE > 15%
-Debt/Equity < 0.5
-Revenue Growth > 10%
-P/E < 30
-```
-
-StockMentor can explain why each filter matters.
-
----
-
-# 🌎 Capital Markets Education
-
-StockMentor goes beyond equities.
-
-Supported educational areas include:
-
-### Equities
-
-### Bonds
-
-### ETFs
-
-### Mutual Funds
-
-### Futures
-
-### Options
-
-### Commodities
-
-### Forex
-
-### REITs
-
-### InvITs
-
-### Money Markets
-
-### Credit Markets
-
-### Structured Products
-
-### Alternative Investments
-
-### Portfolio Management
-
----
-
-# 🧠 Learning Philosophy
-
-StockMentor follows one core principle:
-
-> **AI shouldn't make you dependent on AI. It should make you better at thinking without AI.**
-
-The platform therefore emphasizes:
-
-* Critical thinking
-* Independent research
-* Risk awareness
-* Evidence-based reasoning
-* Practical application
-* Continuous learning
-
----
-
-# 🛡️ Educational & Risk Disclaimer
-
-StockMentor is designed for **educational and simulation purposes**.
-
-The platform should clearly distinguish between:
-
-* Market data
-* Historical data
-* AI-generated analysis
-* Simulated results
-* Hypothetical scenarios
-* Educational information
-
-AI-generated analysis should not be treated as guaranteed predictions or personalized financial advice.
-
-Paper trading and simulations do not guarantee real-world trading performance.
-
----
-
-# 🏗️ Project Architecture
-
-```text
-StockMentor
-│
-├── Frontend
-│   ├── Dashboard
-│   ├── AI Mentor
-│   ├── Learning
-│   ├── Quizzes
-│   ├── Exams
-│   ├── Charts
-│   ├── Trading Simulator
-│   ├── Stock Research
-│   ├── Portfolio
-│   └── Profile
-│
-├── Backend
-│   ├── Authentication
-│   ├── AI Services
-│   ├── Market Data
-│   ├── User Management
-│   ├── Learning Engine
-│   ├── Quiz Engine
-│   ├── Simulation Engine
-│   └── Analytics
-│
-├── Database
-│   ├── Users
-│   ├── Lessons
-│   ├── Questions
-│   ├── Exams
-│   ├── Trades
-│   ├── Portfolios
-│   ├── Progress
-│   └── Achievements
-│
-└── AI Layer
-    ├── Socratic Tutor
-    ├── Research Assistant
-    ├── Analyst
-    ├── Risk Manager
-    └── Learning Coach
-```
-
----
-
-# 💻 Tech Stack
-
-> Update this section according to the technologies actually used in the project.
-
-### Frontend
-
-* React / Next.js
-* TypeScript
-* Tailwind CSS
-* Charting library
-
-### Backend
-
-* Node.js
-* API layer
-* Authentication
-* Database
-
-### AI
-
-* LLM API
-* Prompt orchestration
-* AI evaluation
-* Adaptive learning engine
-
-### Data
-
-* Market-data API
-* Financial-data APIs
-* Historical market data
-
-### Infrastructure
-
-* Cloud hosting
-* Database hosting
-* CI/CD
-
----
-
-# 🚀 Getting Started
-
-## 1. Clone the repository
+Experience the deployed application on Vercel:
 
 ```bash
-git clone https://github.com/garvshaw89-glitch/stockmentor.git
-cd stockmentor
+# Visit the live application in any web browser
+https://stock-mentortutor.vercel.app/
 ```
 
-## 2. Install dependencies
+- ⚡ **Zero-Install Instant Access:** Fully responsive on desktop, tablet, and mobile.
+- 🔒 **Client-Safe Architecture:** All AI operations proxy through server-side endpoints to keep credentials secure.
 
+---
+
+## 🛠️ Architecture & Tech Stack
+
+```mermaid
+graph TD
+    A[Web Browser Client] -->|Vite + React 18| B[Express 4 Server]
+    B -->|SDK Proxy @google/genai| C[Google Gemini 3.7 Flash API]
+    A -->|Recharts & Lucide| D[Visual Charting & Indicators]
+    A -->|LocalStorage Engine| E[Persistent User State & Portfolio]
+    B -->|Structured Output Schema| C
+    C -->|Socratic Text + JSON| B
+    B -->|Hydrated Payloads| A
+```
+
+- **Frontend:** React 18, TypeScript, Tailwind CSS, Lucide Icons, Recharts, Motion.
+- **Backend:** Node.js, Express, TypeScript (`tsx` dev runner, `esbuild` production bundler).
+- **AI Intelligence:** `@google/genai` TypeScript SDK with model `gemini-3.7-flash`.
+- **Deployment:** Vercel / Cloud Run container ready (`PORT=3000`, `0.0.0.0`).
+
+---
+
+## 💻 Local Development & Setup
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/your-username/stock-mentor.git
+cd stock-mentor
+```
+
+### 2. Install Dependencies
 ```bash
 npm install
 ```
 
-## 3. Configure environment variables
-
-Create a `.env.local` file:
-
+### 3. Configure Environment Variables
+Create a `.env` file in the project root:
 ```env
-AI_API_KEY=your_api_key
-MARKET_DATA_API_KEY=your_api_key
-DATABASE_URL=(https://stock-mentortutor.vercel.app/)
+# Google Gemini API Key
+GEMINI_API_KEY="your_gemini_api_key_here"
+
+# App Deployment URL (Optional)
+APP_URL="https://stock-mentortutor.vercel.app/"
 ```
 
-Never commit secrets or API keys to GitHub.
+> **Note:** Obtain your Gemini API key from [Google AI Studio](https://aistudio.google.com/).
 
-## 4. Start development server
-
+### 4. Run Development Server
 ```bash
 npm run dev
 ```
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-Open:
-
-```text
-http://localhost:3000
-```
-
----
-
-# 🧪 Testing
-
-Run the test suite:
-
-```bash
-npm test
-```
-
-Run linting:
-
-```bash
-npm run lint
-```
-
-Run production build:
-
+### 5. Production Build
 ```bash
 npm run build
+npm start
 ```
 
 ---
 
-# 📱 Responsive Design
-
-StockMentor is designed to work across:
-
-* 📱 Mobile
-* 📲 Tablet
-* 💻 Laptop
-* 🖥️ Desktop
-* 🖥️ Large displays
-
-The trading simulator and learning dashboard are designed with responsive layouts for smaller screens.
-
----
-
-# 🔐 Security
-
-Security considerations include:
-
-* Secure authentication
-* Server-side API keys
-* Input validation
-* Protected routes
-* API authorization
-* Secure database access
-* Rate limiting
-* Error handling
-* Sensitive-data protection
-
----
-
-# 🗺️ Roadmap
-
-## Phase 1 — Foundation
-
-* [x] Project architecture
-* [ ] Authentication
-* [ ] Dashboard
-* [ ] AI Mentor
-* [ ] Learning system
-
-## Phase 2 — Education
-
-* [ ] 500+ finance topics
-* [ ] Quizzes
-* [ ] Exams
-* [ ] Adaptive learning
-* [ ] Progress tracking
-
-## Phase 3 — Market Simulator
-
-* [ ] Interactive charts
-* [ ] Paper trading
-* [ ] Historical replay
-* [ ] What Happens Next?
-* [ ] Trading journal
-
-## Phase 4 — Research
-
-* [ ] Stock screener
-* [ ] Financial analysis
-* [ ] Company comparison
-* [ ] Investment thesis builder
-* [ ] AI research assistant
-
-## Phase 5 — Advanced AI
-
-* [ ] Bull vs Bear AI
-* [ ] Devil's Advocate
-* [ ] AI Investment Committee
-* [ ] Personal Trading DNA
-* [ ] Adaptive coaching
-
-## Phase 6 — Community
-
-* [ ] Analyst profiles
-* [ ] Research sharing
-* [ ] Challenges
-* [ ] Leaderboards
-* [ ] Competitions
-
----
-
-# 🌟 Vision
-
-StockMentor aims to become a **personal AI finance university** where anyone can learn financial markets from beginner to advanced level through interactive practice rather than passive reading.
-
-Instead of:
-
-> **"Here is what P/E means."**
-
-StockMentor asks:
-
-> **"Two companies have the same earnings, but one has a P/E of 15 and another has a P/E of 50. Which one would you investigate further — and why?"**
-
-The goal is simple:
-
-# **Don't just learn the market. Learn how to think about the market.**
-
----
-
-# 🤝 Contributing
-
-Contributions are welcome.
-
-1. Fork the repository
-2. Create a feature branch
-
-```bash
-git checkout -b feature/new-feature
-```
-
-3. Commit your changes
-
-```bash
-git commit -m "Add new feature"
-```
-
-4. Push the branch
-
-```bash
-git push origin feature/new-feature
-```
-
-5. Open a Pull Request
-
----
-
-# 📄 License
-
-This project is licensed under the MIT License.
-
----
-
-# ⭐ Support
-
-If you find StockMentor useful, consider giving the project a ⭐ on GitHub.
-
----
-
-## 📈 StockMentor
-
-**Learn. Analyze. Simulate. Test. Improve. Master.**
-
-> 🧠 **Your AI-powered pocket coach for understanding financial markets.**
+## 📂 Project Structure
 
 ```
+├── .env.example              # Environment variable declaration template
+├── index.html                # HTML entry point with metadata tags
+├── metadata.json             # AI Studio platform configuration
+├── package.json              # Project dependencies and build scripts
+├── README.md                 # Project documentation & GitHub animated README
+├── server.ts                 # Express backend proxying Gemini 3.7 Flash
+├── src/
+│   ├── App.tsx               # Main application routing & theme state
+│   ├── components/
+│   │   ├── ChartsModule.tsx  # Interactive technical indicators & pattern lab
+│   │   ├── Header.tsx        # Brand banner, live link badge, search & theme
+│   │   ├── HomeDashboard.tsx # Executive overview & quick launch pads
+│   │   ├── LearnModule.tsx   # Stock market university curriculum
+│   │   ├── Navigation.tsx    # Responsive desktop & mobile tab navigation
+│   │   ├── ReadmeModule.tsx  # In-app interactive animated README viewer
+│   │   ├── ResearchModule.tsx# Institutional equity research powered by Gemini
+│   │   ├── SimulatorModule.tsx# ₹10L paper trading portfolio engine
+│   │   ├── SocraticDrawer.tsx# Multi-depth Socratic AI tutor drawer
+│   │   └── ...               # Additional specialized simulations & labs
+│   ├── data/                 # Stock databases, lesson curricula, and quizzes
+│   ├── types.ts              # TypeScript domain types and schemas
+│   └── utils/                # State persistence & financial math utilities
 ```
+
+---
+
+## 🛡️ Educational Disclaimer
+
+StockMentor AI is built solely for **educational and simulated pedagogical purposes**. Market scenarios, paper trading balances, AI research analyses, and Socratic feedback do not constitute financial, investment, legal, or tax advice. Always conduct independent due diligence before committing real capital.
+
+---
+
+<div align="center">
+
+**StockMentor AI** • Socratic Market Intelligence  
+Live Project: [https://stock-mentortutor.vercel.app/](https://stock-mentortutor.vercel.app/)
+
+⭐ Star this repository if you find it helpful for trading education!
+
+</div>

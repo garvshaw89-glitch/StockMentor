@@ -246,11 +246,16 @@ export const ResearchModule: React.FC<ResearchModuleProps> = ({
         {/* AI Stock Research Report Display */}
         {report && (
           <div className="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-5 animate-fadeIn">
-            <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-700 pb-3">
-              <Sparkles className="w-5 h-5 text-emerald-500" />
-              <h3 className="font-extrabold text-base text-slate-900 dark:text-white">
-                StockMentor AI Research Report — {selectedStock.name}
-              </h3>
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-emerald-500" />
+                <h3 className="font-extrabold text-base text-slate-900 dark:text-white">
+                  StockMentor AI Research Report — {selectedStock.name}
+                </h3>
+              </div>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                TruCharts API
+              </span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs leading-relaxed text-slate-700 dark:text-slate-300">

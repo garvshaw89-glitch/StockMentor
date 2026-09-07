@@ -1,6 +1,6 @@
 import React from "react";
 import { ExplanationMode, TabType, UserProfile } from "../types";
-import { Sparkles, Sun, Moon, Search, Flame, Award, Wallet, Info } from "lucide-react";
+import { Sparkles, Sun, Moon, Search, Flame, Award, Wallet, Info, ExternalLink } from "lucide-react";
 
 interface HeaderProps {
   mode: ExplanationMode;
@@ -54,6 +54,19 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Quick Search & Explanation Mode Toggle */}
           <div className="flex items-center gap-2">
+            {/* Live Project Link */}
+            <a
+              href="https://stock-mentortutor.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 text-xs font-extrabold bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 rounded-xl transition-all shadow-sm"
+              title="Open Live Project on Vercel"
+            >
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Live Project</span>
+              <ExternalLink className="w-3.5 h-3.5 ml-0.5" />
+            </a>
+
             {/* Quick Search Button */}
             <button
               onClick={onOpenSearch}

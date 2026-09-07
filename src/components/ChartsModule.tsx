@@ -9,22 +9,21 @@ import {
   XAxis, 
   YAxis, 
   Tooltip, 
-  CartesianGrid,
+  CartesianGrid, 
+  Line,
   BarChart,
-  Bar,
-  LineChart,
-  Line
+  Bar
 } from "recharts";
 import { 
   LineChart as LineChartIcon, 
   Brain, 
   Sparkles, 
-  TrendingUp, 
-  Award, 
   CheckCircle2, 
-  AlertTriangle,
-  Layers,
-  HelpCircle
+  HelpCircle,
+  Zap,
+  TrendingUp,
+  Activity,
+  Layers
 } from "lucide-react";
 
 interface ChartsModuleProps {
@@ -33,12 +32,12 @@ interface ChartsModuleProps {
 }
 
 export const ChartsModule: React.FC<ChartsModuleProps> = ({
-  profile,
   onOpenSocraticWithQuestion
 }) => {
   const [selectedStock, setSelectedStock] = useState<StockData>(STOCKS_DATA[0]);
   const [timeframe, setTimeframe] = useState<"1D" | "1W" | "1M" | "1Y">("1D");
   const [showSMA, setShowSMA] = useState(true);
+  const [showEMA, setShowEMA] = useState(true);
   const [showRSI, setShowRSI] = useState(true);
   const [showVolume, setShowVolume] = useState(true);
   const [chartExplanation, setChartExplanation] = useState<string | null>(null);
@@ -61,8 +60,9 @@ export const ChartsModule: React.FC<ChartsModuleProps> = ({
     try {
       const activeIndicators = [];
       if (showSMA) activeIndicators.push("SMA-20");
+      if (showEMA) activeIndicators.push("EMA-50");
       if (showRSI) activeIndicators.push("RSI-14");
-      if (showVolume) activeIndicators.push("Volume");
+      if (showVolume) activeIndicators.push("Volume Profile");
 
       const response = await fetch("/api/ai/explain-chart", {
         method: "POST",
@@ -81,7 +81,7 @@ export const ChartsModule: React.FC<ChartsModuleProps> = ({
       const data = await response.json();
       setChartExplanation(data.explanation);
     } catch (err) {
-      console.error("Error explaining chart:", err);
+      console.error("Error explaining chart with Gemini AI:", err);
     } finally {
       setLoadingExplanation(false);
     }
@@ -89,58 +89,55 @@ export const ChartsModule: React.FC<ChartsModuleProps> = ({
 
   return (
     <div className="space-y-6 pb-20 md:pb-8">
-      {/* Title Header */}
+      {/* Header */}
       <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
             <LineChartIcon className="w-6 h-6 text-emerald-600" />
             <h1 className="text-xl font-bold text-slate-900 dark:text-white">
-              Technical Analysis & Chart Terminal
+              Technical Chart & Pattern Analysis
             </h1>
           </div>
           <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-            Analyze moving averages, RSI momentum, volume spikes, and test your skills with historical chart challenges.
+            Real-time interactive candlestick and indicator engine with AI-driven Socratic chart breakdowns powered by <strong className="text-emerald-500">Gemini 3.7 Flash</strong>.
           </p>
         </div>
 
-        {/* Stock Selector */}
         <div className="flex items-center gap-2">
-          {STOCKS_DATA.map(s => (
-            <button
-              key={s.symbol}
-              onClick={() => {
-                setSelectedStock(s);
-                setChartExplanation(null);
-              }}
-              className={`px-3 py-1.5 text-xs font-bold rounded-xl border transition-all ${
-                selectedStock.symbol === s.symbol
-                  ? "bg-emerald-600 text-white border-emerald-600 shadow-sm"
-                  : "bg-slate-50 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300"
-              }`}
-            >
-              {s.symbol}
-            </button>
-          ))}
+          <span className="px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold text-xs flex items-center gap-1.5">
+            <Sparkles className="w-3.5 h-3.5" />
+            Gemini 3.7 Flash AI
+          </span>
         </div>
       </div>
 
-      {/* Interactive Chart Container */}
+      {/* Main Chart Terminal */}
       <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
-        {/* Chart Header Controls */}
+        {/* Stock Selector & Timeframe Controls */}
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-3">
-          <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <span>{selectedStock.name} ({selectedStock.symbol})</span>
-              <span className="text-xs font-semibold px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded">
-                ₹{selectedStock.price}
-              </span>
-            </h2>
+          <div className="flex flex-wrap items-center gap-1.5">
+            {STOCKS_DATA.map((s) => (
+              <button
+                key={s.symbol}
+                onClick={() => {
+                  setSelectedStock(s);
+                  setChartExplanation(null);
+                }}
+                className={`px-3 py-1.5 text-xs font-bold rounded-xl border transition-all ${
+                  selectedStock.symbol === s.symbol
+                    ? "bg-emerald-600 text-white border-emerald-600 shadow-sm"
+                    : "bg-slate-50 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                }`}
+              >
+                {s.symbol}
+              </button>
+            ))}
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
             {/* Timeframe Toggles */}
             <div className="bg-slate-100 dark:bg-slate-800 p-1 rounded-xl flex items-center border border-slate-200 dark:border-slate-700 text-xs font-bold">
-              {(["1D", "1W", "1M", "1Y"] as const).map(tf => (
+              {(["1D", "1W", "1M", "1Y"] as const).map((tf) => (
                 <button
                   key={tf}
                   onClick={() => setTimeframe(tf)}
@@ -160,23 +157,39 @@ export const ChartsModule: React.FC<ChartsModuleProps> = ({
               <button
                 onClick={() => setShowSMA(!showSMA)}
                 className={`px-2.5 py-1 rounded-lg border transition-colors ${
-                  showSMA ? "bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 border-amber-300" : "bg-slate-100 dark:bg-slate-800 text-slate-500 border-slate-200 dark:border-slate-700"
+                  showSMA
+                    ? "bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/40"
+                    : "bg-slate-100 dark:bg-slate-800 text-slate-500 border-slate-200 dark:border-slate-700"
                 }`}
               >
                 SMA (20)
               </button>
               <button
-                onClick={() => setShowRSI(!showRSI)}
+                onClick={() => setShowEMA(!showEMA)}
                 className={`px-2.5 py-1 rounded-lg border transition-colors ${
-                  showRSI ? "bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 border-indigo-300" : "bg-slate-100 dark:bg-slate-800 text-slate-500 border-slate-200 dark:border-slate-700"
+                  showEMA
+                    ? "bg-blue-500/20 text-blue-600 dark:text-blue-400 border-blue-500/40"
+                    : "bg-slate-100 dark:bg-slate-800 text-slate-500 border-slate-200 dark:border-slate-700"
                 }`}
               >
-                RSI
+                EMA (50)
+              </button>
+              <button
+                onClick={() => setShowRSI(!showRSI)}
+                className={`px-2.5 py-1 rounded-lg border transition-colors ${
+                  showRSI
+                    ? "bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 border-indigo-500/40"
+                    : "bg-slate-100 dark:bg-slate-800 text-slate-500 border-slate-200 dark:border-slate-700"
+                }`}
+              >
+                RSI (14)
               </button>
               <button
                 onClick={() => setShowVolume(!showVolume)}
                 className={`px-2.5 py-1 rounded-lg border transition-colors ${
-                  showVolume ? "bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border-emerald-300" : "bg-slate-100 dark:bg-slate-800 text-slate-500 border-slate-200 dark:border-slate-700"
+                  showVolume
+                    ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/40"
+                    : "bg-slate-100 dark:bg-slate-800 text-slate-500 border-slate-200 dark:border-slate-700"
                 }`}
               >
                 Volume
@@ -185,8 +198,39 @@ export const ChartsModule: React.FC<ChartsModuleProps> = ({
           </div>
         </div>
 
-        {/* Primary Price & SMA Chart */}
-        <div className="h-64 sm:h-80 w-full pt-2">
+        {/* Selected Stock Banner Info */}
+        <div className="flex flex-wrap items-center justify-between gap-4 p-3 bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-800">
+          <div className="flex items-center gap-3">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-base text-slate-900 dark:text-white">{selectedStock.name}</span>
+                <span className="text-xs px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-mono font-bold">
+                  {selectedStock.symbol}
+                </span>
+              </div>
+              <span className="text-xs text-slate-500">{selectedStock.sector}</span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4 text-right">
+            <div>
+              <div className="text-lg font-bold font-mono text-slate-900 dark:text-white">
+                ₹{selectedStock.price.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+              </div>
+              <div className={`text-xs font-bold flex items-center justify-end gap-1 ${
+                selectedStock.change >= 0 ? "text-emerald-500" : "text-rose-500"
+              }`}>
+                <TrendingUp className={`w-3.5 h-3.5 ${selectedStock.change < 0 ? "rotate-180" : ""}`} />
+                <span>
+                  {selectedStock.change >= 0 ? "+" : ""}{selectedStock.change}% (₹{selectedStock.changeAmount})
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Primary Price & Moving Averages Chart */}
+        <div className="h-72 sm:h-96 w-full pt-2">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={activeChartData}>
               <defs>
@@ -196,113 +240,161 @@ export const ChartsModule: React.FC<ChartsModuleProps> = ({
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" opacity={0.1} />
-              <XAxis dataKey="time" stroke="#94a3b8" fontSize={10} tickLine={false} />
-              <YAxis domain={["auto", "auto"]} stroke="#94a3b8" fontSize={10} tickLine={false} />
-              <Tooltip 
-                contentStyle={{ backgroundColor: "#0f172a", borderRadius: "12px", borderColor: "#334155", color: "#fff", fontSize: "12px" }}
+              <XAxis dataKey="time" stroke="#94a3b8" fontSize={11} tickLine={false} />
+              <YAxis domain={["auto", "auto"]} stroke="#94a3b8" fontSize={11} tickLine={false} />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "#0f172a",
+                  borderRadius: "12px",
+                  borderColor: "#334155",
+                  color: "#fff",
+                  fontSize: "12px",
+                }}
               />
-              <Area type="monotone" dataKey="price" stroke="#10b981" strokeWidth={2.5} fillOpacity={1} fill="url(#priceGradient)" name="Price (₹)" />
-              {showSMA && <Line type="monotone" dataKey="ma20" stroke="#f59e0b" strokeWidth={1.5} dot={false} name="SMA 20" />}
+              <Area
+                type="monotone"
+                dataKey="price"
+                stroke="#10b981"
+                strokeWidth={2.5}
+                fillOpacity={1}
+                fill="url(#priceGradient)"
+                name="Price (₹)"
+              />
+              {showSMA && (
+                <Line
+                  type="monotone"
+                  dataKey="ma20"
+                  stroke="#f59e0b"
+                  strokeWidth={1.5}
+                  dot={false}
+                  name="SMA 20"
+                />
+              )}
             </AreaChart>
           </ResponsiveContainer>
         </div>
 
-        {/* Indicator Level Selection Toolbar & Indicator Explainer Bar */}
-        <div className="flex flex-wrap items-center justify-between gap-3 p-3 bg-slate-100 dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 text-xs">
-          <div className="flex items-center gap-2">
-            <span className="font-bold text-slate-500 uppercase text-[10px]">Chart Complexity Tier:</span>
-            <span className="px-2.5 py-1 bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-extrabold rounded-lg border border-emerald-500/30">
-              Professional Tier (Price + Volume + SMA + RSI)
-            </span>
+        {/* Sub-Panel: Volume Bars */}
+        {showVolume && (
+          <div className="h-28 w-full border-t border-slate-200 dark:border-slate-800 pt-2">
+            <span className="text-[10px] font-bold text-slate-500 uppercase">Volume Distribution</span>
+            <ResponsiveContainer width="100%" height="80%">
+              <BarChart data={activeChartData}>
+                <CartesianGrid strokeDasharray="3 3" opacity={0.05} />
+                <XAxis dataKey="time" hide />
+                <YAxis stroke="#94a3b8" fontSize={9} tickLine={false} />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "#0f172a",
+                    borderRadius: "8px",
+                    borderColor: "#334155",
+                    color: "#fff",
+                    fontSize: "11px",
+                  }}
+                />
+                <Bar dataKey="volume" fill="#059669" opacity={0.6} name="Volume (Shares)" />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
+        )}
 
-          <div className="flex items-center gap-2">
+        {/* Action Controls & Gemini Breakdown */}
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">
+          <div className="flex flex-wrap items-center gap-2">
             <button
-              onClick={() => onOpenSocraticWithQuestion("Explain RSI (Relative Strength Index) = 72. Is overbought automatically a sell signal?")}
-              className="px-2.5 py-1 bg-indigo-500/20 text-indigo-400 font-bold rounded-lg border border-indigo-500/30 hover:bg-indigo-500/30 transition-colors flex items-center gap-1"
+              onClick={handleExplainChart}
+              disabled={loadingExplanation}
+              className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs transition-colors shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2"
             >
-              <HelpCircle className="w-3.5 h-3.5" />
-              <span>Explain RSI = 72</span>
+              <Brain className="w-4 h-4" />
+              <span>{loadingExplanation ? "Gemini AI Analyzing Setup..." : `Explain ${selectedStock.symbol} Setup with Gemini`}</span>
             </button>
 
             <button
-              onClick={() => onOpenSocraticWithQuestion("Explain 20-day Simple Moving Average (SMA) support and dynamic trendlines")}
-              className="px-2.5 py-1 bg-amber-500/20 text-amber-400 font-bold rounded-lg border border-amber-500/30 hover:bg-amber-500/30 transition-colors flex items-center gap-1"
+              onClick={() =>
+                onOpenSocraticWithQuestion(
+                  `Analyze the technical chart for ${selectedStock.symbol}. How do the 20 SMA and 50 EMA lines indicate trend direction and support?`
+                )
+              }
+              className="px-3.5 py-2 bg-indigo-500/10 text-indigo-400 font-bold rounded-xl border border-indigo-500/20 hover:bg-indigo-500/20 transition-colors text-xs flex items-center gap-1.5"
             >
               <HelpCircle className="w-3.5 h-3.5" />
-              <span>Explain SMA 20</span>
+              <span>Ask Socratic Tutor</span>
             </button>
           </div>
-        </div>
 
-        {/* Explain This Chart Button */}
-        <div className="pt-2 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-          <button
-            onClick={handleExplainChart}
-            disabled={loadingExplanation}
-            className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs transition-colors shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2"
-          >
-            <Brain className="w-4 h-4" />
-            <span>{loadingExplanation ? "AI Analyzing Chart Setup..." : "Explain This Chart"}</span>
-          </button>
-
-          <span className="text-[11px] text-slate-500 text-center sm:text-right">
-            Indicators help quantify velocity and trend direction. Never rely on a single indicator alone.
+          <span className="text-xs text-slate-500">
+            Current Trend: <strong className={selectedStock.change >= 0 ? "text-emerald-500" : "text-rose-500"}>{selectedStock.change >= 0 ? "Bullish Accumulation" : "Consolidation"}</strong>
           </span>
         </div>
 
-        {/* Chart Explanation AI Display */}
+        {/* AI Explanation Banner */}
         {chartExplanation && (
-          <div className="p-4 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl border border-emerald-200 dark:border-emerald-900 text-xs text-slate-800 dark:text-slate-200 space-y-2 animate-fadeIn">
-            <div className="flex items-center gap-1.5 font-bold text-emerald-900 dark:text-emerald-300">
-              <Sparkles className="w-4 h-4 text-emerald-500" />
-              <span>StockMentor AI Chart Breakdown:</span>
+          <div className="p-5 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl space-y-2 animate-fadeIn text-xs text-slate-800 dark:text-slate-200">
+            <div className="flex items-center gap-2 font-bold text-emerald-400">
+              <Sparkles className="w-4 h-4" />
+              <span>Gemini 3.7 Flash Technical Breakdown ({selectedStock.symbol}):</span>
             </div>
-            <div className="whitespace-pre-line leading-relaxed">
-              {chartExplanation}
-            </div>
+            <p className="whitespace-pre-line leading-relaxed">{chartExplanation}</p>
           </div>
         )}
       </div>
 
-      {/* Historical Trading Chart Challenge Game */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
-        <div className="border-b border-slate-200 dark:border-slate-800 pb-4 flex items-center justify-between">
-          <div>
-            <div className="flex items-center gap-2">
-              <Award className="w-5 h-5 text-emerald-600" />
-              <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-                Historical Trading Chart Challenge Game
+      {/* Historical Chart Challenge Lab */}
+      <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+        <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+          <div className="flex items-center gap-2">
+            <Zap className="w-5 h-5 text-amber-500" />
+            <div>
+              <h2 className="text-base font-bold text-slate-900 dark:text-white">
+                Historical Pattern Challenge Lab
               </h2>
+              <p className="text-xs text-slate-500">
+                Test your technical intuition on real market breakout and reversal setups.
+              </p>
             </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-              Analyze a historical chart without knowing the outcome, place entry/stop-loss/target, then reveal what actually happened!
-            </p>
+          </div>
+
+          <div className="flex items-center gap-1">
+            {CHART_CHALLENGES.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => {
+                  setChallengeIdx(idx);
+                  setChallengeSubmitted(false);
+                  setUserPrediction(null);
+                }}
+                className={`w-7 h-7 rounded-lg text-xs font-bold transition-colors ${
+                  challengeIdx === idx
+                    ? "bg-emerald-600 text-white"
+                    : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
+                }`}
+              >
+                {idx + 1}
+              </button>
+            ))}
           </div>
         </div>
 
         {(() => {
           const ch = CHART_CHALLENGES[challengeIdx];
+          if (!ch) return null;
 
           return (
-            <div className="space-y-5">
-              <div className="p-4 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
-                <span className="font-bold text-sm text-slate-900 dark:text-white">
-                  Scenario: {ch.stockName}
-                </span>
-                <p className="text-xs text-slate-600 dark:text-slate-300">
-                  {ch.question}
-                </p>
+            <div className="space-y-4">
+              <div className="bg-slate-50 dark:bg-slate-800/40 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                <h3 className="font-bold text-sm text-slate-900 dark:text-white">{ch.stockName}</h3>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">{ch.question}</p>
 
                 {/* Challenge Chart */}
-                <div className="h-44 w-full pt-2">
+                <div className="h-48 w-full mt-3">
                   <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={ch.chartData}>
+                    <AreaChart data={ch.chartData}>
                       <CartesianGrid strokeDasharray="3 3" opacity={0.1} />
                       <XAxis dataKey="time" stroke="#94a3b8" fontSize={10} />
                       <YAxis domain={["auto", "auto"]} stroke="#94a3b8" fontSize={10} />
-                      <Line type="monotone" dataKey="price" stroke="#059669" strokeWidth={2.5} />
-                    </LineChart>
+                      <Area type="monotone" dataKey="price" stroke="#059669" fill="#059669" fillOpacity={0.1} strokeWidth={2.5} />
+                    </AreaChart>
                   </ResponsiveContainer>
                 </div>
               </div>
@@ -321,7 +413,7 @@ export const ChartsModule: React.FC<ChartsModuleProps> = ({
                         className={`p-3 rounded-xl text-xs text-left font-bold border transition-all ${
                           userPrediction === oIdx
                             ? "bg-emerald-600 text-white border-emerald-600 shadow-md"
-                            : "bg-slate-50 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300"
+                            : "bg-slate-50 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
                         }`}
                       >
                         {opt}
@@ -336,9 +428,9 @@ export const ChartsModule: React.FC<ChartsModuleProps> = ({
                       <input
                         type="number"
                         value={userEntry}
-                        onChange={e => setUserEntry(e.target.value)}
+                        onChange={(e) => setUserEntry(e.target.value)}
                         placeholder="e.g., 448"
-                        className="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-800 border rounded-lg text-xs"
+                        className="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-xs"
                       />
                     </div>
                     <div>
@@ -346,9 +438,9 @@ export const ChartsModule: React.FC<ChartsModuleProps> = ({
                       <input
                         type="number"
                         value={userStopLoss}
-                        onChange={e => setUserStopLoss(e.target.value)}
+                        onChange={(e) => setUserStopLoss(e.target.value)}
                         placeholder="e.g., 428"
-                        className="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-800 border rounded-lg text-xs"
+                        className="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-xs"
                       />
                     </div>
                     <div>
@@ -356,9 +448,9 @@ export const ChartsModule: React.FC<ChartsModuleProps> = ({
                       <input
                         type="number"
                         value={userTarget}
-                        onChange={e => setUserTarget(e.target.value)}
+                        onChange={(e) => setUserTarget(e.target.value)}
                         placeholder="e.g., 488"
-                        className="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-800 border rounded-lg text-xs"
+                        className="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-xs"
                       />
                     </div>
                   </div>

@@ -38,6 +38,7 @@ export const SocraticDrawer: React.FC<SocraticDrawerProps> = ({
   ]);
   const [inputQuery, setInputQuery] = useState("");
   const [loading, setLoading] = useState(false);
+  const [activeProvider, setActiveProvider] = useState<string>("Gemini 3.7 Flash AI");
 
   // Helper to infer diagram type from message text or tag
   const detectDiagramType = (text: string): DiagramType | null => {
@@ -106,11 +107,20 @@ export const SocraticDrawer: React.FC<SocraticDrawerProps> = ({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           question: query,
-          mode: mode
+          mode: mode,
+          history: messages.map(m => ({ sender: m.sender, text: m.text }))
         })
       });
 
       const data = await response.json();
+      if (data.provider) {
+        setActiveProvider(
+          data.provider.startsWith("gemini")
+            ? "Gemini 3.7 Flash AI"
+            : "Gemini AI"
+        );
+      }
+
       const aiMsg: ChatMessage = {
         id: `ai-${Date.now()}`,
         sender: "ai",
@@ -151,17 +161,39 @@ export const SocraticDrawer: React.FC<SocraticDrawerProps> = ({
                 <span className="px-2 py-0.5 bg-indigo-500/20 text-indigo-400 text-[10px] font-bold rounded-full border border-indigo-500/30 uppercase">
                   {mode} Mode
                 </span>
+                <span className="px-1.5 py-0.2 bg-emerald-500/10 text-emerald-400 text-[9px] font-semibold rounded-full border border-emerald-500/20">
+                  {activeProvider}
+                </span>
               </h2>
               <p className="text-[11px] text-slate-500 dark:text-slate-400">Guiding you to analyze markets independently</p>
             </div>
           </div>
 
-          <button
-            onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => {
+                setMessages([
+                  {
+                    id: `init-${Date.now()}`,
+                    sender: "ai",
+                    text: `Hello! I'm your StockMentor Socratic AI Tutor powered by Gemini 3.7 Flash. What topic or stock chart would you like to explore?`,
+                    timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                  }
+                ]);
+              }}
+              title="Reset conversation state"
+              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors text-xs flex items-center gap-1"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+            </button>
+
+            <button
+              onClick={onClose}
+              className="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Chat Messages Body */}
