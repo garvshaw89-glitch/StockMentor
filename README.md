@@ -4,12 +4,11 @@
 
 <p align="center">
   <a href="https://stock-mentortutor.vercel.app/">
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&pause=1200&color=10B981&center=true&vCenter=true&width=750&lines=StockMentor+AI+%E2%80%94+Socratic+Market+Intelligence;Master+Equities%2C+Technical+Charts+%26+Derivatives;Powered+by+Google+Gemini+3.7+Flash;Live+Project%3A+https%3A%2F%2Fstock-mentortutor.vercel.app%2F;Interactive+Paper+Trading+%26+Market+Crash+Labs" alt="Typing SVG" />
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&pause=1200&color=10B981&center=true&vCenter=true&width=750&lines=StockMentor+AI+%E2%80%94+Socratic+Market+Intelligence;Master+Equities%2C+Technical+Charts+%26+Derivatives;Developed+by+Garv+Shaw;Live+Project%3A+https%3A%2F%2Fstock-mentortutor.vercel.app%2F;Interactive+Paper+Trading+%26+Market+Crash+Labs" alt="Typing SVG" />
   </a>
 </p>
 
 [![Live Demo](https://img.shields.io/badge/Live_Project-stock--mentortutor.vercel.app-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://stock-mentortutor.vercel.app/)
-[![Gemini 3.7 Flash](https://img.shields.io/badge/AI_Engine-Gemini_3.7_Flash-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
 [![React](https://img.shields.io/badge/React-18.3-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
