@@ -3,12 +3,12 @@
 # 📈 StockMentor AI — Socratic Market Intelligence & Trading University
 
 <p align="center">
-  <a href="https://stock-mentortutor.vercel.app/">
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&pause=1200&color=10B981&center=true&vCenter=true&width=750&lines=StockMentor+AI+%E2%80%94+Socratic+Market+Intelligence;Master+Equities%2C+Technical+Charts+%26+Derivatives;Developed+by+Garv+Shaw;Live+Project%3A+https%3A%2F%2Fstock-mentortutor.vercel.app%2F;Interactive+Paper+Trading+%26+Market+Crash+Labs" alt="Typing SVG" />
+  <a href="https://stock-mentor-virid.vercel.app/">
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=24&pause=1200&color=10B981&center=true&vCenter=true&width=750&lines=StockMentor+AI+%E2%80%94+Socratic+Market+Intelligence;Master+Equities%2C+Technical+Charts+%26+Derivatives;Developed+by+Garv+Shaw;Live+Project%3A+https%3A%2F%2Fstock-mentor-virid.vercel.app%2F;Interactive+Paper+Trading+%26+Market+Crash+Labs" alt="Typing SVG" />
   </a>
 </p>
 
-[![Live Demo](https://img.shields.io/badge/Live_Project-stock--mentortutor.vercel.app-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://stock-mentortutor.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/Live_Project-stock--mentor-virid.vercel.app-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://stock-mentor-virid.vercel.app/)
 [![React](https://img.shields.io/badge/React-18.3-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
@@ -17,7 +17,7 @@
 <br/>
 
 ### 🌐 **Live Application**
-### 👉 **[https://stock-mentortutor.vercel.app/](https://stock-mentortutor.vercel.app/)** 👈
+### 👉 **[https://stock-mentor-virid.vercel.app/](https://stock-mentor-virid.vercel.app/)** 👈
 
 *Experience interactive Socratic tutoring, real-time technical chart breakdowns, and live market paper trading in your browser.*
 
@@ -98,7 +98,7 @@ Experience the deployed application on Vercel:
 
 ```bash
 # Visit the live application in any web browser
-https://stock-mentortutor.vercel.app/
+https://stock-mentor-virid.vercel.app/
 ```
 
 - ⚡ **Zero-Install Instant Access:** Fully responsive on desktop, tablet, and mobile.
@@ -146,7 +146,7 @@ Create a `.env` file in the project root:
 GEMINI_API_KEY="your_gemini_api_key_here"
 
 # App Deployment URL (Optional)
-APP_URL="https://stock-mentortutor.vercel.app/"
+APP_URL="https://stock-mentor-virid.vercel.app/"
 ```
 
 > **Note:** Obtain your Gemini API key from [Google AI Studio](https://aistudio.google.com/).
@@ -203,7 +203,7 @@ StockMentor AI is built solely for **educational and simulated pedagogical purpo
 <div align="center">
 
 **StockMentor AI** • Socratic Market Intelligence  
-Live Project: [https://stock-mentortutor.vercel.app/](https://stock-mentortutor.vercel.app/)
+Live Project: [https://stock-mentor-virid.vercel.app/](https://stock-mentor-virid.vercel.app/)
 
 ⭐ Star this repository if you find it helpful for trading education!
 
