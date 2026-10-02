@@ -341,3 +341,17 @@ export interface ScenarioItem {
     explanation: string;
   }[];
 }
+
+declare global {
+  interface Window {
+    __stockMentorPointer?: {
+      x: number;
+      y: number;
+      normalizedX: number;
+      normalizedY: number;
+      isHover: boolean;
+      activeTab: TabType | string;
+      speed: number;
+    };
+  }
+}

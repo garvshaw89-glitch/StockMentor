@@ -1,6 +1,24 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { ExplanationMode, TabType, UserProfile } from "../types";
-import { Sparkles, Sun, Moon, Search, Flame, Award, Wallet, Info, ExternalLink } from "lucide-react";
+import { 
+  Sun, 
+  Moon, 
+  Search, 
+  Brain, 
+  ChevronDown, 
+  Award, 
+  Sliders, 
+  ShieldAlert, 
+  History, 
+  Activity, 
+  FileText, 
+  Users, 
+  Dna, 
+  Briefcase, 
+  Trophy, 
+  ExternalLink,
+  LineChart
+} from "lucide-react";
 
 interface HeaderProps {
   mode: ExplanationMode;
@@ -11,6 +29,8 @@ interface HeaderProps {
   activeTab: TabType;
   setActiveTab: (tab: TabType) => void;
   onOpenSearch: () => void;
+  onOpenAIMentor: () => void;
+  onReinitialize?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -21,155 +41,263 @@ export const Header: React.FC<HeaderProps> = ({
   profile,
   activeTab,
   setActiveTab,
-  onOpenSearch
+  onOpenSearch,
+  onOpenAIMentor,
+  onReinitialize
 }) => {
+  const [labsDropdownOpen, setLabsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close labs dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setLabsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const primaryNavItems: { id: TabType; label: string }[] = [
+    { id: "home", label: "MARKET" },
+    { id: "learn", label: "LEARN" },
+    { id: "research", label: "RESEARCH" },
+    { id: "charts", label: "CHARTS" },
+    { id: "simulator", label: "SIMULATOR" },
+    { id: "portfolio", label: "PORTFOLIO" }
+  ];
+
+  const labItems: { id: TabType; label: string; icon: React.ReactNode; desc: string }[] = [
+    { id: "labs", label: "Decision Labs Suite", icon: <Sliders className="w-4 h-4 text-blue-400" />, desc: "Order book & valuation models" },
+    { id: "become-analyst", label: "30-Min Analyst Exam", icon: <Award className="w-4 h-4 text-amber-400" />, desc: "Timed institutional evaluation" },
+    { id: "candle-replay", label: "Chart Replay Mode", icon: <LineChart className="w-4 h-4 text-emerald-400" />, desc: "Historical price action simulator" },
+    { id: "survival", label: "Market Survival Simulator", icon: <ShieldAlert className="w-4 h-4 text-rose-400" />, desc: "Lehman, COVID, Dot-Com crashes" },
+    { id: "backtest", label: "Backtesting & Quant Lab", icon: <Sliders className="w-4 h-4 text-indigo-400" />, desc: "Algorithm stress testing" },
+    { id: "portfolio-doctor", label: "AI Portfolio Doctor", icon: <Activity className="w-4 h-4 text-rose-400" />, desc: "Risk diagnosis & rebalancing" },
+    { id: "committee", label: "AI Investment Committee", icon: <Users className="w-4 h-4 text-violet-400" />, desc: "Multi-model committee review" },
+    { id: "translator", label: "10-K Filing Translator", icon: <FileText className="w-4 h-4 text-teal-400" />, desc: "SEC reports & jargon converter" },
+    { id: "historical-sim", label: "Historical Crash Lab", icon: <History className="w-4 h-4 text-amber-400" />, desc: "Deep macroeconomic crises" },
+    { id: "journal-dna", label: "Behavioral DNA Journal", icon: <Dna className="w-4 h-4 text-purple-400" />, desc: "Psychology & bias tracking" },
+    { id: "fund-manager", label: "Virtual Fund Manager", icon: <Briefcase className="w-4 h-4 text-sky-400" />, desc: "Multi-asset institutional mandate" },
+    { id: "leaderboard", label: "Global Skill Ranking", icon: <Trophy className="w-4 h-4 text-yellow-400" />, desc: "Mastery ladder & achievements" }
+  ];
+
+  const isCurrentTabInLabs = labItems.some(item => item.id === activeTab);
+
   return (
-    <header className="sticky top-0 z-40 bg-white/95 dark:bg-[#0D1117] backdrop-blur-md border-b border-slate-200 dark:border-slate-800/80 transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-        <div className="flex items-center justify-between gap-3">
-          {/* Brand Logo & Name */}
+    <header className="sticky top-0 z-40 bg-white/95 dark:bg-[#080A0D]/90 backdrop-blur-xl border-b border-slate-200/80 dark:border-white/[0.07] transition-colors select-none">
+      <div className="max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 gap-4">
+          
+          {/* ================================================================ */}
+          {/* Left: Brand Command Identity */}
+          {/* ================================================================ */}
           <div 
-            className="flex items-center gap-3 cursor-pointer select-none"
             onClick={() => setActiveTab("home")}
+            className="flex items-center gap-3.5 cursor-pointer group shrink-0"
           >
-            <div className="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center text-black font-extrabold shadow-[0_0_12px_rgba(16,185,129,0.3)]">
-              <svg className="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-              </svg>
+            {/* Terminal Monogram Beacon */}
+            <div 
+              onClick={(e) => {
+                if (onReinitialize) {
+                  e.stopPropagation();
+                  onReinitialize();
+                }
+              }}
+              title="Replay System Initialization Awakening"
+              className="relative w-8 h-8 rounded-lg bg-slate-900 dark:bg-white/[0.06] border border-slate-700/60 dark:border-white/[0.12] flex items-center justify-center transition-all group-hover:border-blue-500/50"
+            >
+              <span className="font-mono text-sm font-bold text-white dark:text-[#F5F5F0]">
+                SM
+              </span>
+              <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-emerald-500 animate-beacon" />
             </div>
+
             <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-xl tracking-tight text-slate-900 dark:text-white">
-                  StockMentor
+              <div className="flex items-center gap-2">
+                <span className="font-display font-bold text-lg tracking-tight text-slate-900 dark:text-[#F5F5F0]">
+                  STOCKMENTOR
                 </span>
-                <span className="px-1.5 py-0.5 text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-md uppercase tracking-wider border border-emerald-500/30">
-                  AI
+                <span className="hidden xl:inline-flex items-center px-1.5 py-0.2 text-[9px] font-mono font-medium tracking-widest text-emerald-600 dark:text-[#6EE7B7] bg-emerald-500/10 border border-emerald-500/20 rounded">
+                  LIVE · 12ms
                 </span>
               </div>
-              <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400 hidden sm:block">
-                Socratic Market Intelligence
+              <p className="text-[10px] font-mono tracking-wider uppercase text-slate-500 dark:text-[#686C73]">
+                AI MARKET INTELLIGENCE
               </p>
             </div>
           </div>
 
-          {/* Quick Search & Explanation Mode Toggle */}
-          <div className="flex items-center gap-2">
-            {/* Live Project Link */}
-            <a
-              href="https://stock-mentortutor.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 text-xs font-extrabold bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 rounded-xl transition-all shadow-sm"
-              title="Open Live Project on Vercel"
-            >
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Live Project</span>
-              <ExternalLink className="w-3.5 h-3.5 ml-0.5" />
-            </a>
+          {/* ================================================================ */}
+          {/* Center: Editorial Navigation Dock */}
+          {/* ================================================================ */}
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
+            {primaryNavItems.map((item) => {
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveTab(item.id)}
+                  className={`px-3 py-1.5 text-xs font-mono tracking-wider transition-all duration-150 rounded-lg cursor-pointer ${
+                    isActive
+                      ? "text-slate-950 dark:text-[#F5F5F0] bg-slate-200/80 dark:bg-white/[0.08] font-bold shadow-xs border border-slate-300/80 dark:border-white/[0.1]"
+                      : "text-slate-600 dark:text-[#A5A8AE] hover:text-slate-950 dark:hover:text-[#F5F5F0] hover:bg-slate-100 dark:hover:bg-white/[0.04]"
+                  }`}
+                >
+                  {item.label}
+                </button>
+              );
+            })}
 
-            {/* Quick Search Button */}
-            <button
-              onClick={onOpenSearch}
-              className="flex items-center gap-2 px-3.5 py-2 text-xs font-medium bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl transition-colors border border-slate-200 dark:border-slate-700/80"
-              title="Search stocks or topics"
-            >
-              <Search className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
-              <span className="hidden md:inline">Search equities or modules...</span>
-              <kbd className="hidden lg:inline-block px-1.5 py-0.5 text-[10px] bg-slate-200 dark:bg-slate-900 rounded text-slate-500 dark:text-slate-400 font-mono">⌘K</kbd>
-            </button>
-
-            {/* Explanation Mode Toggle */}
-            <div className="bg-slate-100 dark:bg-slate-800/90 p-1 rounded-xl flex items-center border border-slate-200 dark:border-slate-700/80 text-xs font-medium">
+            {/* LABS Mega Dropdown */}
+            <div className="relative" ref={dropdownRef}>
               <button
-                onClick={() => setMode("ELI5")}
-                className={`px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 ${
-                  mode === "ELI5"
-                    ? "bg-amber-500 text-black font-bold shadow-sm"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                onClick={() => setLabsDropdownOpen(!labsDropdownOpen)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono tracking-wider transition-all duration-150 rounded-lg cursor-pointer ${
+                  isCurrentTabInLabs
+                    ? "text-slate-950 dark:text-[#F5F5F0] bg-slate-200/80 dark:bg-white/[0.08] font-bold border border-slate-300/80 dark:border-white/[0.1]"
+                    : "text-slate-600 dark:text-[#A5A8AE] hover:text-slate-950 dark:hover:text-[#F5F5F0] hover:bg-slate-100 dark:hover:bg-white/[0.04]"
                 }`}
-                title="Explain Like I'm 5 (Simple analogies)"
               >
-                <span>🧒</span>
-                <span className="hidden sm:inline">ELI5</span>
+                <span>LABS</span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-150 ${labsDropdownOpen ? "rotate-180" : ""}`} />
               </button>
 
+              {labsDropdownOpen && (
+                <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-96 bg-white dark:bg-[#0C0F13] border border-slate-200 dark:border-white/[0.12] rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-2 z-50 animate-in fade-in zoom-in-95 duration-150">
+                  <div className="px-3 py-2 border-b border-slate-100 dark:border-white/[0.06] mb-1">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500 dark:text-[#686C73]">
+                      Institutional Labs & Diagnostics
+                    </span>
+                  </div>
+                  <div className="max-h-[380px] overflow-y-auto space-y-1">
+                    {labItems.map((lab) => {
+                      const isSelected = activeTab === lab.id;
+                      return (
+                        <button
+                          key={lab.id}
+                          onClick={() => {
+                            setActiveTab(lab.id);
+                            setLabsDropdownOpen(false);
+                          }}
+                          className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors cursor-pointer ${
+                            isSelected
+                              ? "bg-slate-100 dark:bg-white/[0.08] text-slate-900 dark:text-white"
+                              : "text-slate-700 dark:text-[#A5A8AE] hover:bg-slate-50 dark:hover:bg-white/[0.04]"
+                          }`}
+                        >
+                          <div className="p-1.5 rounded-md bg-slate-100 dark:bg-white/[0.05] shrink-0">
+                            {lab.icon}
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-xs font-semibold text-slate-900 dark:text-[#F5F5F0] truncate">
+                              {lab.label}
+                            </p>
+                            <p className="text-[11px] text-slate-500 dark:text-[#686C73] truncate">
+                              {lab.desc}
+                            </p>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          </nav>
+
+          {/* ================================================================ */}
+          {/* Right: Search, AI Mentor, Pedagogy, Theme, Profile */}
+          {/* ================================================================ */}
+          <div className="flex items-center gap-2 sm:gap-2.5">
+            {/* Quick Search Button (⌘K) */}
+            <button
+              onClick={onOpenSearch}
+              className="flex items-center gap-2 px-3 py-1.5 text-xs font-mono bg-slate-100/90 dark:bg-white/[0.05] hover:bg-slate-200 dark:hover:bg-white/[0.09] text-slate-600 dark:text-[#A5A8AE] border border-slate-200 dark:border-white/[0.08] rounded-lg transition-colors cursor-pointer"
+              title="Quick Command & Search (⌘K)"
+            >
+              <Search className="w-3.5 h-3.5 text-slate-400 dark:text-[#6F9BFF]" />
+              <span className="hidden md:inline text-[11px]">SEARCH</span>
+              <kbd className="hidden sm:inline-block px-1.5 py-0.2 text-[10px] bg-slate-200 dark:bg-white/[0.08] text-slate-500 dark:text-[#A5A8AE] rounded font-mono">
+                ⌘K
+              </kbd>
+            </button>
+
+            {/* AI Mentor Button */}
+            <button
+              onClick={onOpenAIMentor}
+              className="flex items-center gap-2 px-3 py-1.5 text-xs font-semibold bg-blue-600 hover:bg-blue-500 dark:bg-[#6F9BFF]/15 hover:dark:bg-[#6F9BFF]/25 text-white dark:text-[#6F9BFF] border border-transparent dark:border-[#6F9BFF]/30 rounded-lg transition-all cursor-pointer shadow-xs"
+              title="Open AI Market Mentor"
+            >
+              <Brain className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline font-mono tracking-tight text-[11px]">AI MENTOR</span>
+            </button>
+
+            {/* Pedagogy Mode Selector */}
+            <div className="hidden xl:flex items-center p-0.5 rounded-lg bg-slate-100 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.08] text-[11px] font-mono">
+              <button
+                onClick={() => setMode("ELI5")}
+                className={`px-2 py-0.5 rounded transition-all cursor-pointer ${
+                  mode === "ELI5"
+                    ? "bg-amber-500 text-slate-950 font-bold"
+                    : "text-slate-600 dark:text-[#A5A8AE] hover:text-slate-900 dark:hover:text-white"
+                }`}
+                title="Explain Like I'm 5 (Intuitive analogies)"
+              >
+                ELI5
+              </button>
               <button
                 onClick={() => setMode("Simple")}
-                className={`px-2.5 py-1 rounded-lg transition-all ${
+                className={`px-2 py-0.5 rounded transition-all cursor-pointer ${
                   mode === "Simple"
-                    ? "bg-emerald-500 text-black font-bold shadow-sm"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                    ? "bg-blue-600 dark:bg-[#6F9BFF] text-white dark:text-slate-950 font-bold"
+                    : "text-slate-600 dark:text-[#A5A8AE] hover:text-slate-900 dark:hover:text-white"
                 }`}
                 title="Simple & clear terms"
               >
-                <span>Simple</span>
+                Simple
               </button>
-
               <button
                 onClick={() => setMode("Professional")}
-                className={`px-2.5 py-1 rounded-lg transition-all ${
+                className={`px-2 py-0.5 rounded transition-all cursor-pointer ${
                   mode === "Professional"
-                    ? "bg-indigo-500 text-white font-bold shadow-sm"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                    ? "bg-emerald-500 dark:bg-[#6EE7B7] text-slate-950 font-bold"
+                    : "text-slate-600 dark:text-[#A5A8AE] hover:text-slate-900 dark:hover:text-white"
                 }`}
-                title="Professional financial terms"
+                title="Institutional quant & valuation metrics"
               >
-                <span>Pro</span>
+                Pro
               </button>
             </div>
 
-            {/* Streak & Virtual Cash Badges */}
-            <div className="hidden lg:flex items-center gap-2">
-              <div 
-                onClick={() => setActiveTab("profile")}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-full text-xs font-bold text-orange-500 dark:text-orange-400 cursor-pointer hover:opacity-90 transition-opacity"
-                title="Current Learning Streak"
-              >
-                <span className="text-orange-400 font-bold">{profile.streak} 🔥</span>
-                <span className="text-slate-500 dark:text-slate-400 text-[11px] font-normal">Day Streak</span>
-              </div>
-
-              <div 
-                onClick={() => setActiveTab("simulator")}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-full text-xs font-bold text-emerald-600 dark:text-emerald-400 cursor-pointer hover:opacity-90 transition-opacity"
-                title="Virtual Cash Balance"
-              >
-                <Wallet className="w-3.5 h-3.5 text-emerald-500" />
-                <span>₹{(profile.paperBalance / 100000).toFixed(2)}L</span>
-              </div>
-            </div>
-
-            {/* User Avatar Circle */}
-            <div 
-              onClick={() => setActiveTab("profile")}
-              className="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold text-xs shadow-md cursor-pointer hover:border-emerald-500 transition-colors"
-              title="User Profile"
-            >
-              AS
-            </div>
-
-            {/* Theme Toggle Button */}
+            {/* Theme Toggle */}
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl transition-colors border border-slate-200 dark:border-slate-700/80"
-              aria-label="Toggle theme"
+              className="p-2 text-slate-600 dark:text-[#A5A8AE] hover:text-slate-900 dark:hover:text-white bg-slate-100/90 dark:bg-white/[0.05] hover:bg-slate-200 dark:hover:bg-white/[0.08] border border-slate-200 dark:border-white/[0.08] rounded-lg transition-colors cursor-pointer"
+              title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
             >
-              {isDarkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-600" />}
+              {isDarkMode ? <Sun className="w-3.5 h-3.5 text-amber-400" /> : <Moon className="w-3.5 h-3.5 text-slate-700" />}
             </button>
-          </div>
-        </div>
 
-        {/* Global Safety Disclaimer Banner */}
-        <div className="mt-2 text-[11px] text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-900/60 px-3 py-1 rounded-lg flex items-center justify-between border border-slate-200/80 dark:border-slate-800">
-          <div className="flex items-center gap-1.5">
-            <Info className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-            <span className="truncate">
-              Educational market simulator & Socratic AI — not financial investment advice.
-            </span>
+            {/* Profile Avatar Trigger */}
+            <button
+              onClick={() => setActiveTab("profile")}
+              className={`flex items-center gap-2 pl-1.5 pr-2.5 py-1 rounded-lg border transition-all cursor-pointer ${
+                activeTab === "profile"
+                  ? "bg-slate-200/90 dark:bg-white/[0.1] border-slate-400 dark:border-white/[0.2]"
+                  : "bg-slate-100/80 dark:bg-white/[0.04] border-slate-200 dark:border-white/[0.08] hover:bg-slate-200 dark:hover:bg-white/[0.08]"
+              }`}
+              title="Open Profile & Performance DNA"
+            >
+              <span className="text-sm">{profile.avatar || "👤"}</span>
+              <span className="hidden sm:inline text-xs font-mono font-medium text-slate-900 dark:text-[#F5F5F0]">
+                {profile.name}
+              </span>
+            </button>
+
           </div>
-          <span className="hidden sm:inline font-semibold text-emerald-600 dark:text-emerald-400 ml-2 shrink-0">
-            Mode: {mode}
-          </span>
+
         </div>
       </div>
     </header>

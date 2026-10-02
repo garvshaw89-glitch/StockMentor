@@ -4,6 +4,14 @@ import { STOCKS_DATA } from "../data/stocks";
 import { LiveTradingLearningSimulator } from "./LiveTradingLearningSimulator";
 import { PaperTradingInteractiveChart } from "./PaperTradingInteractiveChart";
 import { 
+  LuxuryPanel, 
+  IntelligenceCard, 
+  MetricDisplay, 
+  SectionHeader, 
+  PrecisionButton, 
+  MarketIndicator 
+} from "./ui/LuxuryPrimitives";
+import { 
   TrendingUp, 
   Wallet, 
   ArrowUpRight, 
@@ -15,10 +23,8 @@ import {
   CheckCircle2,
   BarChart2,
   Zap,
-  DollarSign,
   Activity,
   XCircle,
-  RefreshCw,
   Play,
   Award
 } from "lucide-react";
@@ -83,7 +89,6 @@ export const SimulatorModule: React.FC<SimulatorModuleProps> = ({
         Object.keys(updated).forEach(sym => {
           if (Math.random() > 0.4) {
             const current = updated[sym].price;
-            // random delta between -0.6% and +0.6%
             const pctChange = (Math.random() * 1.2 - 0.58) / 100;
             const newPrice = Math.max(1, +(current * (1 + pctChange)).toFixed(2));
             const tickDir = newPrice >= current ? "up" : "down";
@@ -140,7 +145,7 @@ export const SimulatorModule: React.FC<SimulatorModuleProps> = ({
 
     if (orderType === "BUY") {
       if (totalOrderCost > profile.paperBalance) {
-        showToast("❌ Insufficient Virtual Cash Balance for this order.");
+        showToast("Insufficient Virtual Cash Balance for this order.");
         return;
       }
 
@@ -173,12 +178,12 @@ export const SimulatorModule: React.FC<SimulatorModuleProps> = ({
       onUpdatePositions([...positions, newPos]);
       onUpdateTrades([newTrade, ...trades]);
       onUpdateProfile({ ...profile, paperBalance: newBalance });
-      showToast(`✓ BOUGHT ${totalQuantity} shares/qty of ${tradingSymbol} at ₹${activePrice}`);
+      showToast(`EXECUTED: BOUGHT ${totalQuantity} of ${tradingSymbol} @ ₹${activePrice.toFixed(2)}`);
     } else {
       // SELL Position
       const existingPos = positions.find(p => p.symbol === tradingSymbol);
       if (!existingPos || existingPos.shares < totalQuantity) {
-        showToast(`❌ You don't own ${totalQuantity} shares/qty of ${tradingSymbol} to sell.`);
+        showToast(`You do not hold ${totalQuantity} units of ${tradingSymbol} to close.`);
         return;
       }
 
@@ -223,424 +228,453 @@ export const SimulatorModule: React.FC<SimulatorModuleProps> = ({
     onUpdatePositions(updatedPositions);
     onUpdateTrades([newTrade, ...trades]);
     onUpdateProfile({ ...profile, paperBalance: newBalance });
-    showToast(`✓ SOLD ${qtyToSell} of ${pos.symbol} at ₹${currentLiveP}. Realized P&L: ${realizedPnL >= 0 ? "+" : ""}₹${realizedPnL.toFixed(2)}`);
+    showToast(`EXECUTED: CLOSED ${qtyToSell} of ${pos.symbol} @ ₹${currentLiveP.toFixed(2)}. Realized: ${realizedPnL >= 0 ? "+" : ""}₹${realizedPnL.toFixed(2)}`);
   };
 
   return (
-    <div className="space-y-6 pb-20 md:pb-8">
+    <div className="space-y-6 pb-24 md:pb-12">
+      
       {/* Toast Alert Banner */}
       {toastMessage && (
-        <div className="fixed top-5 right-5 z-50 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl border border-emerald-500 font-bold text-xs flex items-center gap-2 animate-bounce">
-          <Activity className="w-4 h-4 text-emerald-400" />
+        <div className="fixed top-20 right-6 z-50 bg-slate-900 dark:bg-[#11151A] text-white px-4 py-3 rounded-xl shadow-2xl border border-blue-500/40 font-mono text-xs flex items-center gap-2.5 animate-in slide-in-from-top">
+          <Activity className="w-4 h-4 text-blue-400" />
           <span>{toastMessage}</span>
         </div>
       )}
 
-      {/* Main Module Sub-Navigation Header */}
-      <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-2 flex items-center gap-2 max-w-2xl">
-        <button
-          onClick={() => setActiveMainSimTab("live-simulator")}
-          className={`flex-1 py-3 px-4 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 ${
-            activeMainSimTab === "live-simulator"
-              ? "bg-emerald-500 text-black shadow-lg shadow-emerald-500/20"
-              : "text-slate-400 hover:text-white bg-slate-950/60"
-          }`}
-        >
-          <Play className="w-4 h-4 fill-current" />
-          <span>🎓 Live Trading Learning Simulator ("What Happens Next?")</span>
-        </button>
+      {/* ================================================================ */}
+      {/* 1. Header & Desk Mode Switcher */}
+      {/* ================================================================ */}
+      <div className="space-y-4">
+        <SectionHeader
+          kicker="INSTITUTIONAL RISK & EXECUTION DESK"
+          title="SIMULATION DESK"
+          description="High-fidelity market simulator with ₹10,00,000 institutional virtual allocation, live mark-to-market valuations, and execution scoring."
+          action={
+            <div className="flex items-center p-1 rounded-xl bg-slate-100 dark:bg-white/[0.05] border border-slate-200 dark:border-white/[0.08] text-xs font-mono">
+              <button
+                onClick={() => setActiveMainSimTab("live-simulator")}
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
+                  activeMainSimTab === "live-simulator"
+                    ? "bg-slate-900 dark:bg-white text-white dark:text-slate-950 font-bold shadow-xs"
+                    : "text-slate-600 dark:text-[#A5A8AE] hover:text-slate-900 dark:hover:text-white"
+                }`}
+              >
+                <Play className="w-3.5 h-3.5" />
+                <span>Live Action Simulator</span>
+              </button>
+              <button
+                onClick={() => setActiveMainSimTab("paper-terminal")}
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
+                  activeMainSimTab === "paper-terminal"
+                    ? "bg-slate-900 dark:bg-white text-white dark:text-slate-950 font-bold shadow-xs"
+                    : "text-slate-600 dark:text-[#A5A8AE] hover:text-slate-900 dark:hover:text-white"
+                }`}
+              >
+                <TrendingUp className="w-3.5 h-3.5" />
+                <span>Execution Terminal</span>
+              </button>
+            </div>
+          }
+        />
 
-        <button
-          onClick={() => setActiveMainSimTab("paper-terminal")}
-          className={`flex-1 py-3 px-4 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 ${
-            activeMainSimTab === "paper-terminal"
-              ? "bg-emerald-500 text-black shadow-lg shadow-emerald-500/20"
-              : "text-slate-400 hover:text-white bg-slate-950/60"
-          }`}
-        >
-          <Briefcase className="w-4 h-4" />
-          <span>💼 Paper Execution Terminal</span>
-        </button>
+        {/* Executive Portfolio Telemetry Ribbon */}
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+          <LuxuryPanel className="p-4">
+            <MetricDisplay
+              label="TOTAL PORTFOLIO NAV"
+              value={`₹${portfolioTotalNav.toLocaleString("en-IN", { maximumFractionDigits: 0 })}`}
+              size="sm"
+            />
+          </LuxuryPanel>
+          <LuxuryPanel className="p-4">
+            <MetricDisplay
+              label="AVAILABLE CASH"
+              value={`₹${profile.paperBalance.toLocaleString("en-IN", { maximumFractionDigits: 0 })}`}
+              size="sm"
+            />
+          </LuxuryPanel>
+          <LuxuryPanel className="p-4">
+            <MetricDisplay
+              label="OPEN POSITIONS VALUE"
+              value={`₹${currentTotalValue.toLocaleString("en-IN", { maximumFractionDigits: 0 })}`}
+              size="sm"
+            />
+          </LuxuryPanel>
+          <LuxuryPanel className="p-4">
+            <MetricDisplay
+              label="UNREALIZED P&L"
+              value={`₹${totalUnrealizedPnL >= 0 ? "+" : ""}${totalUnrealizedPnL.toFixed(2)}`}
+              change={`${totalPnLPercent >= 0 ? "+" : ""}${totalPnLPercent.toFixed(2)}%`}
+              changeType={totalUnrealizedPnL >= 0 ? "positive" : "negative"}
+              size="sm"
+            />
+          </LuxuryPanel>
+          <LuxuryPanel className="p-4">
+            <MetricDisplay
+              label="PROCESS QUALITY SCORE"
+              value={`${calculateProcessScore()}/100`}
+              change="Optimal Risk"
+              changeType="positive"
+              size="sm"
+            />
+          </LuxuryPanel>
+        </div>
       </div>
 
-      {/* LIVE SIMULATOR MODE */}
-      {activeMainSimTab === "live-simulator" && (
+      {/* ================================================================ */}
+      {/* 2. Mode Content Switcher */}
+      {/* ================================================================ */}
+      {activeMainSimTab === "live-simulator" ? (
         <LiveTradingLearningSimulator
           profile={profile}
           positions={positions}
           trades={trades}
-          onUpdateProfile={onUpdateProfile}
           onUpdatePositions={onUpdatePositions}
           onUpdateTrades={onUpdateTrades}
+          onUpdateProfile={onUpdateProfile}
         />
-      )}
+      ) : (
+        <div className="space-y-6">
+          
+          {/* Main Execution Terminal Area */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            {/* Left Column (8/12): Interactive Chart & Asset Switcher */}
+            <div className="lg:col-span-8 space-y-4">
+              
+              {/* Asset Segment & Contract Picker */}
+              <LuxuryPanel className="p-4 flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-1.5 p-1 rounded-lg bg-slate-100 dark:bg-white/[0.04] text-xs font-mono">
+                  <button
+                    onClick={() => setAssetSegment("EQUITY")}
+                    className={`px-3 py-1 rounded cursor-pointer ${
+                      assetSegment === "EQUITY"
+                        ? "bg-slate-900 dark:bg-white text-white dark:text-slate-950 font-bold"
+                        : "text-slate-600 dark:text-[#A5A8AE]"
+                    }`}
+                  >
+                    Equities (Cash)
+                  </button>
+                  <button
+                    onClick={() => setAssetSegment("FNO")}
+                    className={`px-3 py-1 rounded cursor-pointer ${
+                      assetSegment === "FNO"
+                        ? "bg-slate-900 dark:bg-white text-white dark:text-slate-950 font-bold"
+                        : "text-slate-600 dark:text-[#A5A8AE]"
+                    }`}
+                  >
+                    F&O Derivatives
+                  </button>
+                </div>
 
-      {/* PAPER EXECUTION TERMINAL MODE */}
-      {activeMainSimTab === "paper-terminal" && (
-        <>
-          {/* Header & Portfolio Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-xl border border-slate-800">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold mb-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-              <span>Real-Time P&L Fluctuation Active</span>
-            </div>
-            <h1 className="text-2xl font-black">
-              Simulator Trading Terminal (Equities & FnO)
-            </h1>
-            <p className="text-xs text-slate-300 mt-1">
-              Live market order simulation with continuous price ticks, FnO derivatives, and instant position exit.
-            </p>
-          </div>
+                {/* Ticker Selector */}
+                <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none font-mono text-xs">
+                  {assetSegment === "EQUITY" ? (
+                    STOCKS_DATA.map(s => {
+                      const isSel = selectedSymbol === s.symbol;
+                      const tick = liveStockPrices[s.symbol];
+                      return (
+                        <button
+                          key={s.symbol}
+                          onClick={() => setSelectedSymbol(s.symbol)}
+                          className={`px-2.5 py-1 rounded border transition-colors cursor-pointer shrink-0 ${
+                            isSel
+                              ? "bg-slate-900 dark:bg-white text-white dark:text-slate-950 font-bold border-slate-900 dark:border-white"
+                              : "bg-slate-50 dark:bg-white/[0.03] text-slate-600 dark:text-[#A5A8AE] border-slate-200 dark:border-white/[0.06]"
+                          }`}
+                        >
+                          <span>{s.symbol}</span>
+                          <span className={`ml-1 text-[10px] ${
+                            tick?.tickDir === "up" ? "text-emerald-500 font-bold" : tick?.tickDir === "down" ? "text-rose-500 font-bold" : ""
+                          }`}>
+                            ₹{tick?.price.toFixed(1) || s.price}
+                          </span>
+                        </button>
+                      );
+                    })
+                  ) : (
+                    FNO_CONTRACTS.map(f => {
+                      const isSel = selectedFnoSymbol === f.symbol;
+                      return (
+                        <button
+                          key={f.symbol}
+                          onClick={() => setSelectedFnoSymbol(f.symbol)}
+                          className={`px-2.5 py-1 rounded border transition-colors cursor-pointer shrink-0 ${
+                            isSel
+                              ? "bg-slate-900 dark:bg-white text-white dark:text-slate-950 font-bold border-slate-900 dark:border-white"
+                              : "bg-slate-50 dark:bg-white/[0.03] text-slate-600 dark:text-[#A5A8AE] border-slate-200 dark:border-white/[0.06]"
+                          }`}
+                        >
+                          {f.symbol}
+                        </button>
+                      );
+                    })
+                  )}
+                </div>
+              </LuxuryPanel>
 
-          <div className="bg-white/10 p-4 rounded-xl border border-white/20 flex items-center gap-6">
-            <div>
-              <span className="text-xs font-medium text-slate-300 block">Total Portfolio NAV</span>
-              <span className="text-2xl font-black text-white mt-0.5 block">
-                ₹{portfolioTotalNav.toLocaleString(undefined, { maximumFractionDigits: 2 })}
-              </span>
-            </div>
+              {/* Interactive Execution Chart */}
+              <LuxuryPanel elevated className="p-5">
+                <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/[0.05] mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="font-display font-bold text-base text-slate-900 dark:text-[#F5F5F0]">
+                      {assetSegment === "EQUITY" ? currentStock.name : currentFno.symbol}
+                    </span>
+                    <span className="text-xs font-mono text-slate-500">
+                      LIVE FEED · MARK-TO-MARKET
+                    </span>
+                  </div>
+                  <MetricDisplay
+                    label="CURRENT PRICE"
+                    value={`₹${activePrice.toFixed(2)}`}
+                    size="sm"
+                  />
+                </div>
+                <div className="h-80 w-full">
+                  <PaperTradingInteractiveChart
+                    symbol={assetSegment === "EQUITY" ? currentStock.symbol : currentFno.symbol}
+                    currentPrice={activePrice}
+                    positions={positions.filter(p => p.symbol === (assetSegment === "EQUITY" ? currentStock.symbol : currentFno.symbol))}
+                  />
+                </div>
+              </LuxuryPanel>
 
-            <div>
-              <span className="text-xs font-medium text-slate-300 block">Unrealized P&L</span>
-              <span className={`text-base font-bold flex items-center gap-0.5 mt-0.5 ${
-                totalUnrealizedPnL >= 0 ? "text-emerald-400" : "text-rose-400"
-              }`}>
-                {totalUnrealizedPnL >= 0 ? "+" : ""}₹{totalUnrealizedPnL.toFixed(2)} ({totalPnLPercent.toFixed(2)}%)
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Process Metrics Row */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-4 border-t border-white/10 text-xs">
-          <div>
-            <span className="text-slate-400 block">Available Cash</span>
-            <span className="font-bold text-emerald-400 text-sm">₹{profile.paperBalance.toLocaleString(undefined, { maximumFractionDigits: 2 })}</span>
-          </div>
-          <div>
-            <span className="text-slate-400 block">Active Holdings</span>
-            <span className="font-bold text-white text-sm">{positions.length} Positions</span>
-          </div>
-          <div>
-            <span className="text-slate-400 block">Process Quality Score</span>
-            <span className="font-bold text-amber-400 text-sm">{calculateProcessScore()}/100</span>
-          </div>
-          <div>
-            <span className="text-slate-400 block">Margin Utilization</span>
-            <span className="font-bold text-white text-sm">
-              {investedAmount > 0 ? `${((investedAmount / (profile.paperBalance + investedAmount)) * 100).toFixed(1)}%` : "0%"}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* REAL INTERACTIVE TRADING CHART FOR PAPER TRADING */}
-      <PaperTradingInteractiveChart
-        profile={profile}
-        positions={positions}
-        trades={trades}
-        onUpdatePositions={onUpdatePositions}
-        onUpdateTrades={onUpdateTrades}
-        onUpdateProfile={onUpdateProfile}
-        selectedStockSymbol={selectedSymbol}
-        onSelectStockSymbol={(sym) => setSelectedSymbol(sym)}
-      />
-
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Order Execution Ticket (5 cols) */}
-        <div className="lg:col-span-5 bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-5">
-          <div className="flex items-center justify-between">
-            <h2 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <Plus className="w-5 h-5 text-emerald-600" />
-              <span>Trade Ticket</span>
-            </h2>
-
-            {/* Asset Segment Selector */}
-            <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700">
-              <button
-                onClick={() => setAssetSegment("EQUITY")}
-                className={`px-3 py-1 rounded-lg transition-all ${
-                  assetSegment === "EQUITY" ? "bg-emerald-500 text-black font-extrabold" : "text-slate-500"
-                }`}
-              >
-                Equities
-              </button>
-              <button
-                onClick={() => setAssetSegment("FNO")}
-                className={`px-3 py-1 rounded-lg transition-all flex items-center gap-1 ${
-                  assetSegment === "FNO" ? "bg-emerald-500 text-black font-extrabold" : "text-slate-500"
-                }`}
-              >
-                <Zap className="w-3 h-3" />
-                <span>FnO</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Instrument Selector */}
-          {assetSegment === "EQUITY" ? (
-            <div className="space-y-1">
-              <label className="text-xs font-semibold text-slate-600 dark:text-slate-400">Select Equity Stock:</label>
-              <select
-                value={selectedSymbol}
-                onChange={e => setSelectedSymbol(e.target.value)}
-                className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white"
-              >
-                {STOCKS_DATA.map(s => {
-                  const liveP = liveStockPrices[s.symbol]?.price || s.price;
-                  return (
-                    <option key={s.symbol} value={s.symbol}>
-                      {s.name} ({s.symbol}) — ₹{liveP}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-          ) : (
-            <div className="space-y-1">
-              <label className="text-xs font-semibold text-slate-600 dark:text-slate-400">Select FnO Derivative Contract:</label>
-              <select
-                value={selectedFnoSymbol}
-                onChange={e => setSelectedFnoSymbol(e.target.value)}
-                className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white"
-              >
-                {FNO_CONTRACTS.map(f => {
-                  const liveP = liveStockPrices[f.symbol]?.price || f.price;
-                  return (
-                    <option key={f.symbol} value={f.symbol}>
-                      {f.symbol} ({f.type}) — Premium: ₹{liveP} [Lot: {f.lotSize}]
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-          )}
-
-          {/* BUY / SELL Switch */}
-          <div className="grid grid-cols-2 gap-2 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
-            <button
-              onClick={() => setOrderType("BUY")}
-              className={`py-2 rounded-lg text-xs font-extrabold transition-all ${
-                orderType === "BUY" ? "bg-emerald-600 text-white shadow-sm" : "text-slate-600 dark:text-slate-400"
-              }`}
-            >
-              BUY / LONG
-            </button>
-            <button
-              onClick={() => setOrderType("SELL")}
-              className={`py-2 rounded-lg text-xs font-extrabold transition-all ${
-                orderType === "SELL" ? "bg-rose-600 text-white shadow-sm" : "text-slate-600 dark:text-slate-400"
-              }`}
-            >
-              SELL / SHORT
-            </button>
-          </div>
-
-          {/* Order Input Details */}
-          <div className="space-y-3">
-            <div>
-              <label className="text-xs font-semibold text-slate-600 dark:text-slate-400">
-                {assetSegment === "EQUITY" ? "Number of Shares:" : `Number of Lots (1 Lot = ${currentFno.lotSize} Qty):`}
-              </label>
-              <input
-                type="number"
-                min="1"
-                value={sharesInput}
-                onChange={e => setSharesInput(e.target.value)}
-                className="w-full mt-1 p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white"
-              />
             </div>
 
-            <div className="grid grid-cols-2 gap-2">
-              <div>
-                <label className="text-xs font-semibold text-slate-600 dark:text-slate-400">Stop Loss (₹):</label>
-                <input
-                  type="number"
-                  placeholder="Target SL"
-                  value={stopLossInput}
-                  onChange={e => setStopLossInput(e.target.value)}
-                  className="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-800 border rounded-lg text-xs font-medium"
-                />
+            {/* Right Column (4/12): Order Ticket */}
+            <div className="lg:col-span-4">
+              <LuxuryPanel elevated className="p-6 space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/[0.05]">
+                  <span className="font-mono text-xs uppercase font-bold text-slate-900 dark:text-[#F5F5F0]">
+                    ORDER TICKET
+                  </span>
+                  <span className="text-[10px] font-mono text-emerald-600 dark:text-[#6EE7B7]">
+                    REGIME: INSTANT FILL
+                  </span>
+                </div>
+
+                {/* BUY / SELL Switcher */}
+                <div className="grid grid-cols-2 gap-2 p-1 rounded-xl bg-slate-100 dark:bg-white/[0.04]">
+                  <button
+                    onClick={() => setOrderType("BUY")}
+                    className={`py-2 text-xs font-mono font-bold rounded-lg transition-colors cursor-pointer ${
+                      orderType === "BUY"
+                        ? "bg-emerald-500 text-slate-950 shadow-xs"
+                        : "text-slate-600 dark:text-[#A5A8AE]"
+                    }`}
+                  >
+                    LONG / BUY
+                  </button>
+                  <button
+                    onClick={() => setOrderType("SELL")}
+                    className={`py-2 text-xs font-mono font-bold rounded-lg transition-colors cursor-pointer ${
+                      orderType === "SELL"
+                        ? "bg-rose-500 text-slate-950 shadow-xs"
+                        : "text-slate-600 dark:text-[#A5A8AE]"
+                    }`}
+                  >
+                    CLOSE / SELL
+                  </button>
+                </div>
+
+                {/* Input Fields */}
+                <div className="space-y-3 font-mono text-xs">
+                  <div>
+                    <label className="text-[10px] text-slate-400 block mb-1 uppercase">
+                      Quantity {assetSegment === "FNO" ? `(Lots of ${currentFno.lotSize})` : "(Shares)"}
+                    </label>
+                    <input
+                      type="number"
+                      value={sharesInput}
+                      onChange={e => setSharesInput(e.target.value)}
+                      min="1"
+                      className="w-full px-3 py-2 bg-slate-50 dark:bg-[#080A0D] border border-slate-200 dark:border-white/[0.08] rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[10px] text-slate-400 block mb-1 uppercase">
+                      Stop Loss Price (Optional)
+                    </label>
+                    <input
+                      type="number"
+                      value={stopLossInput}
+                      onChange={e => setStopLossInput(e.target.value)}
+                      placeholder="e.g. Stop price"
+                      className="w-full px-3 py-2 bg-slate-50 dark:bg-[#080A0D] border border-slate-200 dark:border-white/[0.08] rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[10px] text-slate-400 block mb-1 uppercase">
+                      Take Profit Target (Optional)
+                    </label>
+                    <input
+                      type="number"
+                      value={takeProfitInput}
+                      onChange={e => setTakeProfitInput(e.target.value)}
+                      placeholder="e.g. Target price"
+                      className="w-full px-3 py-2 bg-slate-50 dark:bg-[#080A0D] border border-slate-200 dark:border-white/[0.08] rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+                </div>
+
+                {/* Order Summary Breakdown */}
+                <div className="p-3 bg-slate-50 dark:bg-[#080A0D] rounded-xl border border-slate-200 dark:border-white/[0.06] space-y-1.5 text-xs font-mono">
+                  <div className="flex justify-between text-slate-500">
+                    <span>Effective Quantity:</span>
+                    <span className="font-bold text-slate-800 dark:text-slate-200">{totalQuantity} Units</span>
+                  </div>
+                  <div className="flex justify-between text-slate-500">
+                    <span>Estimated Margin/Cost:</span>
+                    <span className="font-bold text-slate-900 dark:text-white">₹{totalOrderCost.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between text-slate-500">
+                    <span>Available Cash:</span>
+                    <span className="text-slate-700 dark:text-slate-300">₹{profile.paperBalance.toFixed(0)}</span>
+                  </div>
+                </div>
+
+                {/* Submit Execution Button */}
+                <button
+                  onClick={handleExecuteOrder}
+                  className={`w-full py-3 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer shadow-sm ${
+                    orderType === "BUY"
+                      ? "bg-emerald-500 hover:bg-emerald-400 text-slate-950"
+                      : "bg-rose-500 hover:bg-rose-400 text-slate-950"
+                  }`}
+                >
+                  EXECUTE {orderType} ORDER (₹{totalOrderCost.toFixed(2)})
+                </button>
+              </LuxuryPanel>
+            </div>
+
+          </div>
+
+          {/* Bottom Table: Open Positions vs Trade Execution History */}
+          <LuxuryPanel className="p-6">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-white/[0.05] mb-4">
+              <div className="flex items-center gap-2 font-mono text-xs">
+                <button
+                  onClick={() => setActiveTabSub("positions")}
+                  className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
+                    activeTabSub === "positions"
+                      ? "bg-slate-900 dark:bg-white text-white dark:text-slate-950 font-bold"
+                      : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
+                  }`}
+                >
+                  Open Positions ({positions.length})
+                </button>
+                <button
+                  onClick={() => setActiveTabSub("history")}
+                  className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
+                    activeTabSub === "history"
+                      ? "bg-slate-900 dark:bg-white text-white dark:text-slate-950 font-bold"
+                      : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
+                  }`}
+                >
+                  Execution Log ({trades.length})
+                </button>
               </div>
-
-              <div>
-                <label className="text-xs font-semibold text-slate-600 dark:text-slate-400">Take Profit (₹):</label>
-                <input
-                  type="number"
-                  placeholder="Target TP"
-                  value={takeProfitInput}
-                  onChange={e => setTakeProfitInput(e.target.value)}
-                  className="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-800 border rounded-lg text-xs font-medium"
-                />
-              </div>
             </div>
 
-            {/* Price Preview Card */}
-            <div className="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border text-xs space-y-1">
-              <div className="flex justify-between text-slate-500">
-                <span>Live Price Tick:</span>
-                <span className="font-bold text-slate-900 dark:text-white flex items-center gap-1">
-                  ₹{activePrice}
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                </span>
-              </div>
-              <div className="flex justify-between text-slate-500">
-                <span>Total Quantity:</span>
-                <span className="font-bold text-slate-900 dark:text-white">{totalQuantity} Qty</span>
-              </div>
-              <div className="flex justify-between text-slate-500">
-                <span>Estimated Order Margin:</span>
-                <span className="font-extrabold text-emerald-600 dark:text-emerald-400">₹{totalOrderCost.toLocaleString()}</span>
-              </div>
-            </div>
-          </div>
-
-          <button
-            onClick={handleExecuteOrder}
-            className={`w-full py-3.5 rounded-xl font-extrabold text-xs text-white shadow-md transition-all ${
-              orderType === "BUY" ? "bg-emerald-600 hover:bg-emerald-500 shadow-emerald-600/20" : "bg-rose-600 hover:bg-rose-500 shadow-rose-600/20"
-            }`}
-          >
-            Execute Virtual {orderType} Order
-          </button>
-        </div>
-
-        {/* Positions & Trade History Tabs (7 cols) */}
-        <div className="lg:col-span-7 bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
-          <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setActiveTabSub("positions")}
-                className={`px-3.5 py-1.5 text-xs font-bold rounded-xl transition-all ${
-                  activeTabSub === "positions" ? "bg-emerald-600 text-white" : "text-slate-500"
-                }`}
-              >
-                Active Positions ({positions.length})
-              </button>
-              <button
-                onClick={() => setActiveTabSub("history")}
-                className={`px-3.5 py-1.5 text-xs font-bold rounded-xl transition-all ${
-                  activeTabSub === "history" ? "bg-emerald-600 text-white" : "text-slate-500"
-                }`}
-              >
-                Trade History ({trades.length})
-              </button>
-            </div>
-
-            <span className="text-[10px] text-emerald-500 font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 flex items-center gap-1">
-              <RefreshCw className="w-3 h-3 animate-spin" />
-              Live Fluctuations
-            </span>
-          </div>
-
-          {activeTabSub === "positions" ? (
-            <div className="space-y-3 overflow-x-auto">
-              {positions.length === 0 ? (
-                <div className="p-12 text-center text-slate-400 space-y-2">
-                  <Briefcase className="w-8 h-8 mx-auto text-slate-300" />
-                  <p className="text-xs font-semibold">No active paper positions yet. Place a virtual order to practice trading.</p>
+            {activeTabSub === "positions" ? (
+              positions.length > 0 ? (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left font-mono text-xs">
+                    <thead>
+                      <tr className="border-b border-slate-200 dark:border-white/[0.08] text-[10px] text-slate-400 uppercase">
+                        <th className="py-2.5">Symbol</th>
+                        <th className="py-2.5">Shares</th>
+                        <th className="py-2.5">Avg Buy Price</th>
+                        <th className="py-2.5">Live Price</th>
+                        <th className="py-2.5">Unrealized P&L</th>
+                        <th className="py-2.5 text-right">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 dark:divide-white/[0.04]">
+                      {positions.map(pos => {
+                        const currentP = liveStockPrices[pos.symbol]?.price || pos.currentPrice;
+                        const pnl = (currentP - pos.buyPrice) * pos.shares;
+                        const pnlPct = (pnl / pos.totalCost) * 100;
+                        return (
+                          <tr key={pos.id} className="hover:bg-slate-50/50 dark:hover:bg-white/[0.02]">
+                            <td className="py-3 font-bold text-slate-900 dark:text-white">
+                              {pos.symbol}
+                            </td>
+                            <td className="py-3 text-slate-700 dark:text-[#A5A8AE]">{pos.shares}</td>
+                            <td className="py-3 text-slate-700 dark:text-[#A5A8AE]">₹{pos.buyPrice.toFixed(2)}</td>
+                            <td className="py-3 text-slate-900 dark:text-white">₹{currentP.toFixed(2)}</td>
+                            <td className={`py-3 font-bold ${pnl >= 0 ? "text-emerald-600 dark:text-[#6EE7B7]" : "text-rose-600 dark:text-[#FF7B86]"}`}>
+                              {pnl >= 0 ? "+" : ""}₹{pnl.toFixed(2)} ({pnlPct.toFixed(2)}%)
+                            </td>
+                            <td className="py-3 text-right">
+                              <button
+                                onClick={() => handleSellPosition(pos.id)}
+                                className="px-2.5 py-1 rounded bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-[#FF7B86] border border-rose-500/20 text-[11px] font-semibold cursor-pointer"
+                              >
+                                Close Position
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
                 </div>
               ) : (
-                positions.map(pos => {
-                  const liveInfo = liveStockPrices[pos.symbol];
-                  const livePrice = liveInfo?.price || pos.currentPrice;
-                  const tickDir = liveInfo?.tickDir || "none";
-
-                  const pnl = (livePrice - pos.buyPrice) * pos.shares;
-                  const pnlPct = ((livePrice - pos.buyPrice) / pos.buyPrice) * 100;
-
-                  return (
-                    <div 
-                      key={pos.id} 
-                      className={`p-4 rounded-xl border transition-all space-y-3 text-xs ${
-                        tickDir === "up" 
-                          ? "bg-emerald-500/5 dark:bg-emerald-950/20 border-emerald-500/40" 
-                          : tickDir === "down"
-                          ? "bg-rose-500/5 dark:bg-rose-950/20 border-rose-500/40"
-                          : "bg-slate-50 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700"
-                      }`}
-                    >
-                      <div className="flex items-start justify-between gap-2">
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className="font-extrabold text-sm text-slate-900 dark:text-white">{pos.symbol}</span>
-                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
-                              {pos.shares} Qty
-                            </span>
-                          </div>
-                          <span className="text-slate-500 text-[11px]">Bought @ ₹{pos.buyPrice.toFixed(2)}</span>
-                        </div>
-
-                        {/* Live Fluctuation P&L */}
-                        <div className="text-right">
-                          <span className={`font-black text-base flex items-center justify-end gap-1 ${
-                            pnl >= 0 ? "text-emerald-500" : "text-rose-500"
-                          }`}>
-                            {pnl >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
-                            {pnl >= 0 ? "+" : ""}₹{pnl.toFixed(2)}
-                          </span>
-                          <span className={`text-[11px] font-bold block ${pnl >= 0 ? "text-emerald-500" : "text-rose-500"}`}>
-                            ({pnlPct >= 0 ? "+" : ""}{pnlPct.toFixed(2)}%)
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Info & Direct SELL Action */}
-                      <div className="flex items-center justify-between text-[11px] pt-2 border-t border-slate-200/80 dark:border-slate-700/80">
-                        <div className="space-x-3 text-slate-400">
-                          <span>Live: <strong className="text-slate-800 dark:text-slate-200">₹{livePrice.toFixed(2)}</strong></span>
-                          <span>Value: <strong className="text-slate-800 dark:text-slate-200">₹{(pos.shares * livePrice).toLocaleString()}</strong></span>
-                        </div>
-
-                        <button
-                          onClick={() => handleSellPosition(pos.id)}
-                          className="px-3.5 py-1.5 bg-rose-600 hover:bg-rose-500 text-white font-extrabold rounded-lg text-xs transition-colors shadow-sm flex items-center gap-1"
-                        >
-                          <XCircle className="w-3.5 h-3.5" />
-                          <span>Sell Position</span>
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })
-              )}
-            </div>
-          ) : (
-            <div className="space-y-2 text-xs">
-              {trades.length === 0 ? (
-                <p className="text-xs text-slate-400 p-8 text-center">No trades logged yet.</p>
+                <div className="py-12 text-center text-slate-400 font-mono text-xs">
+                  No active open positions. Execute an order in the ticket above to enter the market.
+                </div>
+              )
+            ) : (
+              trades.length > 0 ? (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left font-mono text-xs">
+                    <thead>
+                      <tr className="border-b border-slate-200 dark:border-white/[0.08] text-[10px] text-slate-400 uppercase">
+                        <th className="py-2.5">Timestamp</th>
+                        <th className="py-2.5">Side</th>
+                        <th className="py-2.5">Symbol</th>
+                        <th className="py-2.5">Qty</th>
+                        <th className="py-2.5">Price</th>
+                        <th className="py-2.5 text-right">Realized P&L</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 dark:divide-white/[0.04]">
+                      {trades.map(tr => (
+                        <tr key={tr.id} className="hover:bg-slate-50/50 dark:hover:bg-white/[0.02]">
+                          <td className="py-2.5 text-slate-500 text-[11px]">{tr.timestamp}</td>
+                          <td className={`py-2.5 font-bold ${tr.type === "BUY" ? "text-emerald-500" : "text-rose-500"}`}>
+                            {tr.type}
+                          </td>
+                          <td className="py-2.5 text-slate-900 dark:text-white font-medium">{tr.symbol}</td>
+                          <td className="py-2.5 text-slate-700 dark:text-[#A5A8AE]">{tr.shares}</td>
+                          <td className="py-2.5 text-slate-700 dark:text-[#A5A8AE]">₹{tr.price.toFixed(2)}</td>
+                          <td className="py-2.5 text-right">
+                            {tr.pnl !== undefined ? (
+                              <span className={`font-bold ${tr.pnl >= 0 ? "text-emerald-600 dark:text-[#6EE7B7]" : "text-rose-600 dark:text-[#FF7B86]"}`}>
+                                {tr.pnl >= 0 ? "+" : ""}₹{tr.pnl.toFixed(2)}
+                              </span>
+                            ) : "—"}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               ) : (
-                trades.map(tr => (
-                  <div key={tr.id} className="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700/80 flex items-center justify-between">
-                    <div>
-                      <span className={`font-bold px-2 py-0.5 rounded text-[10px] mr-2 ${
-                        tr.type === "BUY" ? "bg-emerald-100 text-emerald-800" : "bg-rose-100 text-rose-800"
-                      }`}>
-                        {tr.type}
-                      </span>
-                      <span className="font-bold text-slate-900 dark:text-white">{tr.symbol}</span>
-                      <span className="text-slate-500 ml-2">{tr.shares} Qty @ ₹{tr.price}</span>
-                    </div>
+                <div className="py-12 text-center text-slate-400 font-mono text-xs">
+                  No historical trade executions recorded.
+                </div>
+              )
+            )}
+          </LuxuryPanel>
 
-                    <div className="text-right">
-                      {tr.pnl !== undefined && (
-                        <span className={`font-extrabold text-xs block ${tr.pnl >= 0 ? "text-emerald-500" : "text-rose-500"}`}>
-                          P&L: {tr.pnl >= 0 ? "+" : ""}₹{tr.pnl.toFixed(2)}
-                        </span>
-                      )}
-                      <span className="text-slate-400 font-mono text-[10px] block">{tr.timestamp}</span>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          )}
         </div>
-      </div>
-        </>
       )}
+
     </div>
   );
 };

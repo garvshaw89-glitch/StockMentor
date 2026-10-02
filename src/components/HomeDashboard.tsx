@@ -4,18 +4,26 @@ import { ActivityChart } from "./ActivityChart";
 import { StockMentorJourneyHeader } from "./StockMentorJourneyHeader";
 import { getRecommendedLesson } from "../utils/curriculumUtils";
 import { 
-  Flame, 
+  LuxuryPanel, 
+  IntelligenceCard, 
+  MetricDisplay, 
+  MarketIndicator, 
+  SectionHeader, 
+  PrecisionButton 
+} from "./ui/LuxuryPrimitives";
+import { 
   Award, 
   BookOpen, 
   CheckCircle2, 
   HelpCircle, 
   TrendingUp, 
-  Zap, 
-  ArrowRight,
-  TrendingDown,
-  ShieldAlert,
-  Brain,
-  Newspaper
+  ArrowRight, 
+  Brain, 
+  Sliders, 
+  Activity, 
+  FileText, 
+  LineChart,
+  ShieldAlert
 } from "lucide-react";
 
 interface HomeDashboardProps {
@@ -50,9 +58,74 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
     setShowDailyExplanation(true);
   };
 
+  // Macro ticker telemetry
+  const macroTickers = [
+    { symbol: "NIFTY 50", price: "24,842.15", change: "+0.68%", type: "positive" as const },
+    { symbol: "S&P 500", price: "5,864.20", change: "+0.42%", type: "positive" as const },
+    { symbol: "NASDAQ", price: "18,340.50", change: "+0.85%", type: "positive" as const },
+    { symbol: "INDIA VIX", price: "12.84", change: "-3.12%", type: "positive" as const },
+    { symbol: "US 10Y", price: "4.08%", change: "+0.02%", type: "neutral" as const },
+  ];
+
   return (
-    <div className="space-y-6 pb-20 md:pb-8">
-      {/* 1. StockMentor Personalized Journey Header & Behavioral Warning */}
+    <div className="space-y-6 pb-24 md:pb-12">
+      
+      {/* ================================================================ */}
+      {/* 1. Header: Section Title & Global Macro Telemetry Bar */}
+      {/* ================================================================ */}
+      <div className="space-y-4">
+        <SectionHeader
+          kicker="EXECUTIVE COMMAND CENTER"
+          title="MARKET INTELLIGENCE"
+          description="Global market telemetry, macro regime indicators, AI algorithmic insights, and active Socratic mastery."
+          action={
+            <div className="flex items-center gap-2">
+              <PrecisionButton
+                variant="secondary"
+                size="sm"
+                icon={<Brain className="w-3.5 h-3.5 text-blue-500 dark:text-[#6F9BFF]" />}
+                onClick={() => onOpenSocraticWithQuestion("Provide a macro regime summary of global equity markets today.")}
+              >
+                Macro Briefing
+              </PrecisionButton>
+              <PrecisionButton
+                variant="primary"
+                size="sm"
+                icon={<TrendingUp className="w-3.5 h-3.5" />}
+                onClick={() => setActiveTab("simulator")}
+              >
+                Launch Simulation Desk
+              </PrecisionButton>
+            </div>
+          }
+        />
+
+        {/* Global Macro Telemetry Ribbon */}
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+          {macroTickers.map((ticker) => (
+            <LuxuryPanel key={ticker.symbol} className="p-3">
+              <div className="flex items-center justify-between text-[10px] font-mono text-slate-500 dark:text-[#686C73]">
+                <span>{ticker.symbol}</span>
+                <MarketIndicator status="active" pulse={false} />
+              </div>
+              <div className="mt-1 flex items-baseline justify-between">
+                <span className="font-mono text-sm sm:text-base font-semibold text-slate-900 dark:text-[#F5F5F0]">
+                  {ticker.price}
+                </span>
+                <span className={`text-[11px] font-mono font-medium ${
+                  ticker.type === "positive" ? "text-emerald-600 dark:text-[#6EE7B7]" : "text-rose-600 dark:text-[#FF7B86]"
+                }`}>
+                  {ticker.change}
+                </span>
+              </div>
+            </LuxuryPanel>
+          ))}
+        </div>
+      </div>
+
+      {/* ================================================================ */}
+      {/* 2. StockMentor Personalized Journey Header & Path Matrix */}
+      {/* ================================================================ */}
       <StockMentorJourneyHeader 
         profile={profile}
         onUpdateProfile={onUpdateProfile}
@@ -60,64 +133,36 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
         onNavigateTab={(tab) => setActiveTab(tab as TabType)}
       />
 
-      {/* Progress Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 backdrop-blur-sm">
-          <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-2">Overall Mastery Score</p>
-          <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-bold text-slate-900 dark:text-white">78%</span>
-            <span className="text-xs text-emerald-500 dark:text-emerald-400 font-medium">+2.4%</span>
-          </div>
-          <div className="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full mt-3 overflow-hidden">
-            <div className="bg-emerald-500 h-full w-[78%]" />
-          </div>
-        </div>
-
-        <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 backdrop-blur-sm">
-          <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-2">Topics Mastered</p>
-          <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-bold text-slate-900 dark:text-white">14</span>
-            <span className="text-xs text-slate-500 dark:text-slate-400">/ 42 Topics</span>
-          </div>
-          <p className="text-[11px] text-emerald-500 dark:text-emerald-400 mt-2 font-medium">Level 2: Intermediate Investor</p>
-        </div>
-
-        <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 backdrop-blur-sm">
-          <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-2">Test Accuracy Avg.</p>
-          <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-bold text-slate-900 dark:text-white">84%</span>
-            <span className="text-xs text-slate-500 dark:text-slate-400">Avg. Score</span>
-          </div>
-          <div className="flex gap-1.5 mt-3">
-            <div className="w-full h-1 bg-emerald-500 rounded-full" />
-            <div className="w-full h-1 bg-emerald-500 rounded-full" />
-            <div className="w-full h-1 bg-emerald-500 rounded-full" />
-            <div className="w-full h-1 bg-slate-300 dark:bg-slate-700 rounded-full" />
-          </div>
-        </div>
-      </div>
-
-      {/* 7-Day Gamified Activity Chart */}
-      <ActivityChart />
-
-      {/* Main Action Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Next Recommended Lesson Card */}
-        <div className="lg:col-span-2 bg-gradient-to-br from-indigo-900/20 to-slate-900 p-6 sm:p-8 rounded-3xl border border-indigo-500/30 flex flex-col justify-between relative overflow-hidden">
-          <div className="absolute -right-12 -top-12 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+      {/* ================================================================ */}
+      {/* 3. Asymmetric Main Intelligence Layout */}
+      {/* ================================================================ */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        {/* Left Column (7/12): Primary Target Lesson + Activity Chart */}
+        <div className="lg:col-span-7 space-y-6">
           
-          <div className="relative z-10">
-            <div className="flex items-center justify-between mb-4">
-              <span className="px-3 py-1 bg-indigo-500/20 text-indigo-300 text-[10px] font-bold rounded-full border border-indigo-500/30 uppercase">
-                Current Target • {recommended.topic.levelTitle}
+          {/* Target Curricula Lesson Panel */}
+          <LuxuryPanel elevated className="p-6">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/[0.05] mb-4">
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-blue-600 dark:text-[#6F9BFF]">
+                  CURRENT CURRICULUM TARGET
+                </span>
+                <span className="text-slate-300 dark:text-white/20">·</span>
+                <span className="text-xs font-mono text-slate-500 dark:text-[#A5A8AE]">
+                  {recommended.topic.levelTitle}
+                </span>
+              </div>
+              <span className="text-xs font-mono text-slate-400 dark:text-[#686C73]">
+                ~{recommended.topic.estimatedTimeMinutes || 5} MIN READ
               </span>
-              <span className="text-xs text-slate-400">{recommended.topic.estimatedTimeMinutes || 5} mins</span>
             </div>
 
-            <h2 className="text-2xl font-bold text-white mt-2">
+            <h3 className="text-xl sm:text-2xl font-bold font-display text-slate-900 dark:text-[#F5F5F0]">
               {recommended.lesson.title}
-            </h2>
-            <p className="text-slate-400 mt-2 max-w-xl text-sm sm:text-base leading-relaxed line-clamp-3">
+            </h3>
+
+            <p className="mt-2.5 text-sm text-slate-600 dark:text-[#A5A8AE] leading-relaxed">
               {mode === "ELI5"
                 ? recommended.lesson.contentELI5
                 : mode === "Simple"
@@ -125,63 +170,75 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
                 : recommended.lesson.contentProfessional}
             </p>
 
-            <div className="mt-4 p-3.5 bg-slate-800/40 rounded-xl text-xs space-y-1 text-slate-300 border border-slate-700/50">
-              <p className="font-semibold text-white">Key Concepts You'll Master:</p>
-              <ul className="list-disc list-inside space-y-0.5 text-slate-400">
+            <div className="mt-4 p-3.5 bg-slate-50 dark:bg-[#080A0D] rounded-xl border border-slate-200 dark:border-white/[0.06] text-xs">
+              <span className="font-mono text-[11px] font-semibold text-slate-900 dark:text-[#F5F5F0] uppercase tracking-wider block mb-1.5">
+                Key Conceptual Competencies:
+              </span>
+              <ul className="space-y-1 text-slate-600 dark:text-[#A5A8AE]">
                 {recommended.lesson.keyTakeaways.map((takeaway, idx) => (
-                  <li key={idx}>{takeaway}</li>
+                  <li key={idx} className="flex items-start gap-2">
+                    <span className="text-blue-500 dark:text-[#6F9BFF] font-mono">0{idx + 1}.</span>
+                    <span>{takeaway}</span>
+                  </li>
                 ))}
               </ul>
             </div>
-          </div>
 
-          <div className="relative z-10 mt-6 flex items-center gap-4">
-            <button
-              onClick={() => setActiveTab("learn")}
-              className="bg-emerald-500 hover:bg-emerald-400 text-black px-6 py-2.5 rounded-xl font-bold transition-all shadow-lg shadow-emerald-500/20 flex items-center gap-2"
-            >
-              <span>Resume Lesson</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => onOpenSocraticWithQuestion(`Can you explain '${recommended.lesson.title}' in detail?`)}
-              className="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl text-sm transition-colors border border-slate-700 flex items-center gap-1.5"
-            >
-              <Brain className="w-4 h-4 text-emerald-400" />
-              <span>Ask AI Tutor</span>
-            </button>
-          </div>
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <PrecisionButton
+                variant="primary"
+                size="md"
+                icon={<ArrowRight className="w-4 h-4" />}
+                onClick={() => setActiveTab("learn")}
+              >
+                Resume Course Module
+              </PrecisionButton>
+              <PrecisionButton
+                variant="secondary"
+                size="md"
+                icon={<Brain className="w-4 h-4 text-blue-500 dark:text-[#6F9BFF]" />}
+                onClick={() => onOpenSocraticWithQuestion(`Can you explain '${recommended.lesson.title}' using first-principles reasoning?`)}
+              >
+                Consult AI Mentor
+              </PrecisionButton>
+            </div>
+          </LuxuryPanel>
+
+          {/* Gamified 7-Day Activity Chart */}
+          <ActivityChart />
+
         </div>
 
-        {/* Daily Challenge Card */}
-        <div className="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 flex flex-col justify-between">
-          <div>
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <HelpCircle className="w-4 h-4 text-amber-500" />
-                <span>Daily Challenge</span>
-              </h3>
-              <span className="text-xs text-slate-500">Expires in 4h 12m</span>
-            </div>
+        {/* Right Column (5/12): Daily Challenge & Quick Gateways */}
+        <div className="lg:col-span-5 space-y-6">
 
-            <div className="bg-slate-50 dark:bg-slate-800/40 p-4 rounded-xl border border-slate-200/80 dark:border-slate-700/50 mb-4">
-              <p className="text-slate-800 dark:text-slate-300 italic text-sm leading-relaxed">
-                "A company reports record profits, but its stock falls 8% immediately after. Why could this happen?"
+          {/* Daily Socratic Challenge */}
+          <IntelligenceCard
+            kicker="SOCRATIC PROMPT EXAM"
+            title="Daily Market Dilemma"
+            action={
+              <span className="text-[10px] font-mono text-slate-400 dark:text-[#686C73]">
+                RESCHEDULES IN 4H
+              </span>
+            }
+          >
+            <div className="p-3.5 bg-slate-50 dark:bg-[#080A0D] rounded-xl border border-slate-200 dark:border-white/[0.06] mb-4">
+              <p className="text-xs sm:text-sm text-slate-800 dark:text-[#F5F5F0] italic font-serif leading-relaxed">
+                &ldquo;A blue-chip equity reports historic all-time-high quarterly profits, yet the stock plunges 8% immediately at market open. What is the fundamental mechanic?&rdquo;
               </p>
             </div>
 
-            {/* Answer Options */}
-            <div className="grid grid-cols-1 gap-2.5">
+            <div className="space-y-2">
               {dailyQuestionOptions.map((opt, idx) => {
                 const isSelected = dailyAnswered === idx;
                 const isCorrect = idx === 0;
 
-                let btnStyle = "bg-slate-50 dark:bg-slate-800/80 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/80";
+                let stateClasses = "bg-white dark:bg-[#11151A] border-slate-200 dark:border-white/[0.08] text-slate-700 dark:text-[#A5A8AE] hover:bg-slate-50 dark:hover:bg-white/[0.04]";
                 if (showDailyExplanation) {
                   if (isCorrect) {
-                    btnStyle = "bg-emerald-50 dark:bg-emerald-950/60 border-emerald-500 text-emerald-800 dark:text-emerald-300 font-bold";
+                    stateClasses = "bg-emerald-500/10 border-emerald-500/40 text-emerald-800 dark:text-[#6EE7B7] font-semibold";
                   } else if (isSelected && !isCorrect) {
-                    btnStyle = "bg-rose-50 dark:bg-rose-950/60 border-rose-500 text-rose-800 dark:text-rose-300";
+                    stateClasses = "bg-rose-500/10 border-rose-500/40 text-rose-800 dark:text-[#FF7B86]";
                   }
                 }
 
@@ -190,94 +247,108 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
                     key={idx}
                     onClick={() => handleSelectDaily(idx)}
                     disabled={showDailyExplanation}
-                    className={`text-left px-4 py-3 rounded-xl border text-xs font-medium transition-all ${btnStyle}`}
+                    className={`w-full text-left px-3.5 py-2.5 rounded-xl border text-xs font-mono transition-all cursor-pointer ${stateClasses}`}
                   >
-                    <span className="font-mono font-bold mr-1.5">{String.fromCharCode(65 + idx)}.</span>
-                    {opt}
+                    <span className="font-bold mr-2 text-slate-400 dark:text-[#686C73]">
+                      [{String.fromCharCode(65 + idx)}]
+                    </span>
+                    <span className="font-sans">{opt}</span>
                   </button>
                 );
               })}
             </div>
 
-            {/* Explanation Display */}
             {showDailyExplanation && (
-              <div className="mt-4 p-3 bg-emerald-50 dark:bg-emerald-950/50 rounded-xl border border-emerald-200 dark:border-emerald-900 text-xs text-emerald-900 dark:text-emerald-200 space-y-1 animate-fadeIn">
-                <span className="font-bold block flex items-center gap-1">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                  Socratic Insight:
+              <div className="mt-4 p-3 bg-emerald-500/10 rounded-xl border border-emerald-500/20 text-xs space-y-1 animate-in fade-in">
+                <span className="font-mono font-bold text-emerald-700 dark:text-[#6EE7B7] block flex items-center gap-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  Socratic Principle:
                 </span>
-                <p>
-                  Stock markets price in **future expectations**. If expectations were higher than actual record numbers, the stock drops despite profitability!
+                <p className="text-slate-700 dark:text-[#A5A8AE] leading-relaxed">
+                  Financial markets discount <strong>future forward expectations</strong>. When street expectations bake in a blowout quarter, merely meeting or reporting lower guidance causes immediate liquidation.
                 </p>
+                <button
+                  onClick={() => onOpenSocraticWithQuestion("Give me 3 historical stock examples where record earnings triggered a severe selloff.")}
+                  className="mt-2 text-[11px] font-mono text-blue-600 dark:text-[#6F9BFF] hover:underline block"
+                >
+                  Explore real historic cases with AI Mentor →
+                </button>
               </div>
             )}
-          </div>
+          </IntelligenceCard>
 
-          {showDailyExplanation && (
-            <button
-              onClick={() => onOpenSocraticWithQuestion("Can you give me another example where stock prices fell after good financial earnings?")}
-              className="mt-4 w-full py-2.5 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded-xl text-xs transition-colors flex items-center justify-center gap-1.5"
+          {/* Institutional Lab Gateways */}
+          <div className="space-y-3">
+            <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500 dark:text-[#686C73] block">
+              SPECIALIZED INTELLIGENCE LABS
+            </span>
+
+            <div 
+              onClick={() => setActiveTab("become-analyst")}
+              className="p-4 rounded-xl bg-white dark:bg-[#0C0F13] border border-slate-200 dark:border-white/[0.06] hover:border-blue-500/40 dark:hover:border-[#6F9BFF]/40 transition-all cursor-pointer group shadow-xs"
             >
-              <Brain className="w-4 h-4" />
-              <span>Explore More Examples</span>
-            </button>
-          )}
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-blue-500/10 text-blue-600 dark:text-[#6F9BFF] group-hover:scale-105 transition-transform">
+                  <Award className="w-4 h-4" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h4 className="text-xs font-semibold text-slate-900 dark:text-[#F5F5F0] group-hover:text-blue-600 dark:group-hover:text-[#6F9BFF] transition-colors">
+                    30-Minute Wall Street Analyst Exam
+                  </h4>
+                  <p className="text-[11px] text-slate-500 dark:text-[#A5A8AE] truncate mt-0.5">
+                    Timed institutional valuation under simulated stress.
+                  </p>
+                </div>
+                <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+            </div>
+
+            <div 
+              onClick={() => setActiveTab("candle-replay")}
+              className="p-4 rounded-xl bg-white dark:bg-[#0C0F13] border border-slate-200 dark:border-white/[0.06] hover:border-emerald-500/40 dark:hover:border-[#6EE7B7]/40 transition-all cursor-pointer group shadow-xs"
+            >
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-[#6EE7B7] group-hover:scale-105 transition-transform">
+                  <LineChart className="w-4 h-4" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h4 className="text-xs font-semibold text-slate-900 dark:text-[#F5F5F0] group-hover:text-emerald-600 dark:group-hover:text-[#6EE7B7] transition-colors">
+                    Chart Replay & Price Action Lab
+                  </h4>
+                  <p className="text-[11px] text-slate-500 dark:text-[#A5A8AE] truncate mt-0.5">
+                    Bar-by-bar candle simulations with execution testing.
+                  </p>
+                </div>
+                <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+            </div>
+
+            <div 
+              onClick={() => setActiveTab("survival")}
+              className="p-4 rounded-xl bg-white dark:bg-[#0C0F13] border border-slate-200 dark:border-white/[0.06] hover:border-rose-500/40 dark:hover:border-[#FF7B86]/40 transition-all cursor-pointer group shadow-xs"
+            >
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-rose-500/10 text-rose-600 dark:text-[#FF7B86] group-hover:scale-105 transition-transform">
+                  <ShieldAlert className="w-4 h-4" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h4 className="text-xs font-semibold text-slate-900 dark:text-[#F5F5F0] group-hover:text-rose-600 dark:group-hover:text-[#FF7B86] transition-colors">
+                    Market Survival Mode
+                  </h4>
+                  <p className="text-[11px] text-slate-500 dark:text-[#A5A8AE] truncate mt-0.5">
+                    Navigate historic 2008 & 2020 systemic crashes.
+                  </p>
+                </div>
+                <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+            </div>
+
+          </div>
+
         </div>
+
       </div>
 
-      {/* Interactive Quick Features Section */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div 
-          onClick={() => setActiveTab("research")}
-          className="p-5 bg-white dark:bg-[#0D1117] text-slate-900 dark:text-white rounded-2xl border border-slate-200 dark:border-slate-800 cursor-pointer hover:border-indigo-500 transition-all shadow-sm group"
-        >
-          <div className="w-10 h-10 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400 mb-3 group-hover:scale-110 transition-transform">
-            <Brain className="w-5 h-5" />
-          </div>
-          <h4 className="font-bold text-base">You Are The Analyst</h4>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-            Evaluate equities, make BUY/HOLD/SELL calls, defend reasoning, and receive Socratic AI feedback.
-          </p>
-          <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-indigo-500 dark:text-indigo-400">
-            <span>Try Decision Exercise</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </div>
-        </div>
-
-        <div 
-          onClick={() => setActiveTab("charts")}
-          className="p-5 bg-white dark:bg-[#0D1117] text-slate-900 dark:text-white rounded-2xl border border-slate-200 dark:border-slate-800 cursor-pointer hover:border-emerald-500 transition-all shadow-sm group"
-        >
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 mb-3 group-hover:scale-110 transition-transform">
-            <TrendingUp className="w-5 h-5 text-emerald-500" />
-          </div>
-          <h4 className="font-bold text-base">Historical Chart Challenge</h4>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-            Analyze blind historical stock chart setups, set stop loss & targets, and reveal the real outcome.
-          </p>
-          <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-emerald-500 dark:text-emerald-400">
-            <span>Play Chart Challenge</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </div>
-        </div>
-
-        <div 
-          onClick={() => setActiveTab("portfolio")}
-          className="p-5 bg-white dark:bg-[#0D1117] text-slate-900 dark:text-white rounded-2xl border border-slate-200 dark:border-slate-800 cursor-pointer hover:border-amber-500 transition-all shadow-sm group"
-        >
-          <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400 mb-3 group-hover:scale-110 transition-transform">
-            <Newspaper className="w-5 h-5 text-amber-500" />
-          </div>
-          <h4 className="font-bold text-base">Financial News Analyzer</h4>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-            Paste RBI updates or news headlines for instant AI breakdowns, sector ripple effects, and Socratic questions.
-          </p>
-          <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-amber-500 dark:text-amber-400">
-            <span>Analyze Headlines</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

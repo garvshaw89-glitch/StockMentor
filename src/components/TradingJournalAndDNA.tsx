@@ -1,14 +1,24 @@
 import React, { useState } from "react";
 import { UserProfile } from "../types";
 import { 
-  BookOpen, 
+  LuxuryPanel, 
+  IntelligenceCard, 
+  MetricDisplay, 
+  SectionHeader, 
+  PrecisionButton, 
+  MarketIndicator 
+} from "./ui/LuxuryPrimitives";
+import { 
   Dna, 
   CheckCircle2, 
   Sparkles, 
   TrendingUp, 
   ShieldAlert, 
   Award,
-  ArrowRight
+  ArrowRight,
+  Brain,
+  AlertTriangle,
+  History
 } from "lucide-react";
 
 interface TradingJournalAndDNAProps {
@@ -20,7 +30,7 @@ export const TradingJournalAndDNA: React.FC<TradingJournalAndDNAProps> = ({
   profile,
   onOpenSocraticWithQuestion
 }) => {
-  const [activeTab, setActiveTab] = useState<"journal" | "dna">("dna");
+  const [activeTab, setActiveTab] = useState<"dna" | "journal">("dna");
 
   const journalEntries = profile.journalEntries || [
     {
@@ -35,7 +45,7 @@ export const TradingJournalAndDNA: React.FC<TradingJournalAndDNAProps> = ({
       followedStrategy: true,
       pnl: 5000,
       pnlPercent: 5.02,
-      aiFeedback: "Excellent entry timing aligned with volume profile. Your stop loss was properly set at 1:3 risk-to-reward.",
+      aiFeedback: "Optimal entry timing aligned with volume profile. Your stop loss was properly set at 1:3 risk-to-reward ratio.",
       timestamp: "2026-08-11 11:15"
     },
     {
@@ -50,7 +60,7 @@ export const TradingJournalAndDNA: React.FC<TradingJournalAndDNAProps> = ({
       followedStrategy: false,
       pnl: -1200,
       pnlPercent: -0.8,
-      aiFeedback: "⚠️ Strategy violation: Entered during extended momentum without awaiting a pullback or consolidation base.",
+      aiFeedback: "Strategy breach: Entered during overextended momentum without awaiting a pullback base or liquidity retest.",
       timestamp: "2026-08-12 10:00"
     }
   ];
@@ -58,154 +68,161 @@ export const TradingJournalAndDNA: React.FC<TradingJournalAndDNAProps> = ({
   const strategyDNA = profile.strategyDNA || {
     bestStyle: "Swing Trading (3 - 10 Days)",
     bestTimeframe: "Daily & 4-Hour Charts",
-    strongestSkill: "Trend Identification & Volume Breakdown",
-    weakestSkill: "Risk-to-Reward Ratio Execution",
+    strongestSkill: "Trend Identification & Volume Confirmation",
+    weakestSkill: "Risk-to-Reward Ratio Discipline",
     commonMistake: "Chasing Momentum After 5+ Green Candles",
     avgRiskPerTrade: "2.5% of Portfolio",
-    preferredSectors: ["Technology", "Automotive", "Banking"]
+    preferredSectors: ["Technology", "Automotive", "Private Banking"]
   };
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-6">
-      {/* Header Bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-800">
-        <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-bold border border-indigo-500/20 uppercase tracking-wider mb-2">
-            <Dna className="w-3.5 h-3.5" />
-            <span>AI Trading Journal & Personal Strategy DNA</span>
-          </div>
-          <h3 className="text-xl font-extrabold text-white">
-            Personal Trading DNA & AI Journal Analysis
-          </h3>
-          <p className="text-xs text-slate-400 mt-1">
-            Automated trade recording, strategy adherence evaluation, and personalized trading behavioral DNA card.
-          </p>
-        </div>
-
-        <div className="flex bg-slate-950 p-1 rounded-2xl border border-slate-800">
-          <button
-            onClick={() => setActiveTab("dna")}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-              activeTab === "dna" ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/20" : "text-slate-400 hover:text-white"
-            }`}
-          >
-            🧬 Strategy DNA Card
-          </button>
-          <button
-            onClick={() => setActiveTab("journal")}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-              activeTab === "journal" ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/20" : "text-slate-400 hover:text-white"
-            }`}
-          >
-            📓 AI Trading Journal
-          </button>
-        </div>
-      </div>
-
-      {activeTab === "dna" && (
-        <div className="p-6 rounded-2xl bg-slate-950 border border-indigo-500/30 space-y-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="p-3 rounded-2xl bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">
-                <Dna className="w-6 h-6" />
-              </div>
-              <div>
-                <span className="text-[10px] text-indigo-400 font-bold uppercase tracking-wider">AI Behavioral Profiler</span>
-                <h4 className="text-lg font-extrabold text-white">Your Personal Strategy DNA Profile</h4>
-              </div>
-            </div>
-            <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold border border-emerald-500/30">
-              Verified 50+ Trades Analyzed
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
-            <div className="bg-slate-900 p-4 rounded-xl border border-slate-800">
-              <p className="text-slate-400 uppercase font-semibold text-[10px]">Optimal Trading Style</p>
-              <p className="text-base font-bold text-emerald-400 mt-1">{strategyDNA.bestStyle}</p>
-              <p className="text-[11px] text-slate-400 mt-0.5">Best Timeframe: {strategyDNA.bestTimeframe}</p>
-            </div>
-
-            <div className="bg-slate-900 p-4 rounded-xl border border-slate-800">
-              <p className="text-slate-400 uppercase font-semibold text-[10px]">Strongest Edge Skill</p>
-              <p className="text-base font-bold text-white mt-1">{strategyDNA.strongestSkill}</p>
-            </div>
-
-            <div className="bg-slate-900 p-4 rounded-xl border border-slate-800">
-              <p className="text-slate-400 uppercase font-semibold text-[10px]">Primary Execution Vulnerability</p>
-              <p className="text-base font-bold text-rose-400 mt-1">{strategyDNA.commonMistake}</p>
-            </div>
-          </div>
-
-          <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div>
-              <p className="text-xs font-bold text-white">Targeted AI Prescription:</p>
-              <p className="text-xs text-slate-300 mt-0.5">
-                Your breakout strategy achieves an 82% win rate when volume exceeds the 20-day average. Enforce a mandatory pullback rule before entering 5+ green candle setups.
-              </p>
-            </div>
-            <button
-              onClick={() => onOpenSocraticWithQuestion("How do I avoid chasing momentum and enter on pullbacks?")}
-              className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl transition-all whitespace-nowrap flex items-center gap-1.5"
-            >
-              <span>Remedial Lesson</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
-        </div>
-      )}
-
-      {activeTab === "journal" && (
-        <div className="space-y-4">
-          <div className="flex items-center justify-between text-xs font-bold text-slate-400">
-            <span>Automated Trade Logs & Strategy Adherence</span>
-            <span>Total Logged Trades: {journalEntries.length}</span>
-          </div>
-
-          <div className="space-y-3">
-            {journalEntries.map((j) => (
-              <div
-                key={j.id}
-                className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-3"
+    <div className="space-y-6 pb-24 md:pb-12">
+      
+      {/* Header */}
+      <SectionHeader
+        kicker="COGNITIVE AUDIT & QUANTITATIVE DISCIPLINE"
+        title="BEHAVIORAL INTELLIGENCE"
+        description="Algorithmic behavioral profiling, emotional tendency detection, strategy adherence audits, and Socratic trading journal reviews."
+        action={
+          <div className="flex items-center gap-2">
+            <div className="flex items-center p-1 rounded-xl bg-slate-100 dark:bg-white/[0.05] border border-slate-200 dark:border-white/[0.08] text-xs font-mono">
+              <button
+                onClick={() => setActiveTab("dna")}
+                className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
+                  activeTab === "dna"
+                    ? "bg-slate-900 dark:bg-white text-white dark:text-slate-950 font-bold shadow-xs"
+                    : "text-slate-600 dark:text-[#A5A8AE]"
+                }`}
               >
-                <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-800 text-xs">
-                  <div className="flex items-center gap-2">
-                    <span className={`px-2 py-0.5 rounded font-extrabold ${j.action === "BUY" ? "bg-emerald-500/20 text-emerald-400" : "bg-rose-500/20 text-rose-400"}`}>
-                      {j.action} {j.stockSymbol}
-                    </span>
-                    <span className="text-slate-400">Entry: ₹{j.entryPrice} | SL: ₹{j.stopLoss} | Target: ₹{j.targetPrice}</span>
-                  </div>
+                Strategy DNA Matrix
+              </button>
+              <button
+                onClick={() => setActiveTab("journal")}
+                className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
+                  activeTab === "journal"
+                    ? "bg-slate-900 dark:bg-white text-white dark:text-slate-950 font-bold shadow-xs"
+                    : "text-slate-600 dark:text-[#A5A8AE]"
+                }`}
+              >
+                Journal Entries ({journalEntries.length})
+              </button>
+            </div>
+          </div>
+        }
+      />
 
-                  <div className="flex items-center gap-2">
-                    {j.followedStrategy ? (
-                      <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold border border-emerald-500/30">
-                        ✓ Followed Strategy
-                      </span>
-                    ) : (
-                      <span className="px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-400 text-[10px] font-bold border border-rose-500/30">
-                        ⚠️ Strategy Violation
-                      </span>
-                    )}
-
-                    {j.pnl !== undefined && (
-                      <span className={`font-black ${j.pnl >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
-                        {j.pnl >= 0 ? "+" : ""}₹{j.pnl.toLocaleString('en-IN')} ({j.pnlPercent}%)
-                      </span>
-                    )}
-                  </div>
+      {/* Main Content Area */}
+      {activeTab === "dna" ? (
+        <div className="space-y-6">
+          <LuxuryPanel elevated className="p-6 space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100 dark:border-white/[0.05]">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-violet-500/10 text-violet-600 dark:text-[#8B7CFF] border border-violet-500/20 flex items-center justify-center">
+                  <Dna className="w-5 h-5" />
                 </div>
-
-                <p className="text-xs text-slate-300"><strong>Trade Thesis:</strong> {j.reasoning}</p>
-
-                <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-300 flex items-start gap-2">
-                  <Sparkles className="w-4 h-4 text-indigo-400 mt-0.5 shrink-0" />
-                  <span>{j.aiFeedback}</span>
+                <div>
+                  <span className="text-[10px] font-mono uppercase text-violet-600 dark:text-[#8B7CFF] font-semibold">
+                    BEHAVIORAL RISK SIGNATURE
+                  </span>
+                  <h3 className="font-display font-bold text-lg text-slate-900 dark:text-[#F5F5F0]">
+                    Personal Strategy DNA Blueprint
+                  </h3>
                 </div>
               </div>
-            ))}
-          </div>
+              <span className="text-xs font-mono text-emerald-600 dark:text-[#6EE7B7] bg-emerald-500/10 px-2.5 py-1 rounded border border-emerald-500/20">
+                50+ VERIFIED SIMULATOR TRADES
+              </span>
+            </div>
+
+            {/* Diagnostic Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 font-mono text-xs">
+              <div className="p-4 bg-slate-50 dark:bg-[#080A0D] rounded-xl border border-slate-200 dark:border-white/[0.06] space-y-1">
+                <span className="text-[10px] text-slate-400 uppercase">Optimal Trading Style</span>
+                <p className="text-base font-bold text-emerald-600 dark:text-[#6EE7B7]">{strategyDNA.bestStyle}</p>
+                <p className="text-[11px] text-slate-500 font-sans mt-0.5">Timeframe: {strategyDNA.bestTimeframe}</p>
+              </div>
+
+              <div className="p-4 bg-slate-50 dark:bg-[#080A0D] rounded-xl border border-slate-200 dark:border-white/[0.06] space-y-1">
+                <span className="text-[10px] text-slate-400 uppercase">Primary Statistical Edge</span>
+                <p className="text-base font-bold text-slate-900 dark:text-white">{strategyDNA.strongestSkill}</p>
+                <p className="text-[11px] text-slate-500 font-sans mt-0.5">High win-rate on confirmed breakouts.</p>
+              </div>
+
+              <div className="p-4 bg-slate-50 dark:bg-[#080A0D] rounded-xl border border-slate-200 dark:border-white/[0.06] space-y-1">
+                <span className="text-[10px] text-slate-400 uppercase">Primary Execution Vulnerability</span>
+                <p className="text-base font-bold text-rose-600 dark:text-[#FF7B86]">{strategyDNA.commonMistake}</p>
+                <p className="text-[11px] text-slate-500 font-sans mt-0.5">Risk of high-drawdown pullbacks.</p>
+              </div>
+            </div>
+
+            {/* Strategy Adherence Ticker */}
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#080A0D] border border-slate-200 dark:border-white/[0.06] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-mono text-xs">
+              <div>
+                <span className="text-slate-400 uppercase text-[10px] block">Average Risk Allocation</span>
+                <span className="text-sm font-bold text-slate-900 dark:text-white">{strategyDNA.avgRiskPerTrade}</span>
+              </div>
+              <div className="h-6 w-px bg-slate-200 dark:border-white/[0.08] hidden sm:block" />
+              <div>
+                <span className="text-slate-400 uppercase text-[10px] block">Preferred Sector Niches</span>
+                <span className="text-slate-800 dark:text-slate-200">{strategyDNA.preferredSectors.join(" · ")}</span>
+              </div>
+              <PrecisionButton
+                variant="primary"
+                size="sm"
+                icon={<Brain className="w-3.5 h-3.5" />}
+                onClick={() => onOpenSocraticWithQuestion(`How can I mathematically counter ${strategyDNA.commonMistake} using automated bracket orders?`)}
+              >
+                Remediate Vulnerability
+              </PrecisionButton>
+            </div>
+          </LuxuryPanel>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {journalEntries.map((entry) => (
+            <LuxuryPanel key={entry.id} elevated className="p-5 space-y-3 font-mono text-xs">
+              <div className="flex items-center justify-between border-b border-slate-100 dark:border-white/[0.05] pb-3">
+                <div className="flex items-center gap-2.5">
+                  <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                    entry.action === "BUY" ? "bg-emerald-500/10 text-emerald-600" : "bg-rose-500/10 text-rose-600"
+                  }`}>
+                    {entry.action}
+                  </span>
+                  <span className="font-bold text-slate-900 dark:text-white font-sans text-sm">
+                    {entry.stockSymbol}
+                  </span>
+                  <span className="text-slate-400 text-[11px]">{entry.shares} Units @ ₹{entry.entryPrice}</span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <span className={`font-bold ${entry.pnl >= 0 ? "text-emerald-600 dark:text-[#6EE7B7]" : "text-rose-600 dark:text-[#FF7B86]"}`}>
+                    {entry.pnl >= 0 ? "+" : ""}₹{entry.pnl} ({entry.pnlPercent}%)
+                  </span>
+                  <span className="text-[10px] text-slate-400">{entry.timestamp}</span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 font-sans">
+                <div className="p-3 bg-slate-50 dark:bg-[#080A0D] rounded-lg border border-slate-200 dark:border-white/[0.06]">
+                  <span className="font-mono text-[10px] text-slate-400 uppercase block mb-1">
+                    Trader Thesis & Execution Rationale:
+                  </span>
+                  <p className="text-xs text-slate-700 dark:text-[#A5A8AE]">{entry.reasoning}</p>
+                </div>
+
+                <div className="p-3 bg-slate-50 dark:bg-[#080A0D] rounded-lg border border-slate-200 dark:border-white/[0.06]">
+                  <span className="font-mono text-[10px] text-blue-500 dark:text-[#6F9BFF] uppercase block mb-1 flex items-center gap-1">
+                    <Sparkles className="w-3 h-3" />
+                    AI Socratic Audit:
+                  </span>
+                  <p className="text-xs text-slate-700 dark:text-[#A5A8AE]">{entry.aiFeedback}</p>
+                </div>
+              </div>
+            </LuxuryPanel>
+          ))}
         </div>
       )}
+
     </div>
   );
 };

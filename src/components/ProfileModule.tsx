@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import { ExplanationMode, UserProfile } from "../types";
 import { 
+  LuxuryPanel, 
+  IntelligenceCard, 
+  MetricDisplay, 
+  SectionHeader, 
+  PrecisionButton, 
+  MarketIndicator 
+} from "./ui/LuxuryPrimitives";
+import { 
   User, 
   Award, 
   Settings, 
@@ -11,9 +19,9 @@ import {
   BookOpen,
   AlertTriangle,
   X,
-  RefreshCw,
   Trash2,
-  Check
+  Check,
+  Dna
 } from "lucide-react";
 
 interface ProfileModuleProps {
@@ -33,94 +41,112 @@ export const ProfileModule: React.FC<ProfileModuleProps> = ({
 }) => {
   const [userName, setUserName] = useState(profile.name);
   const [showResetModal, setShowResetModal] = useState(false);
-  const [resetSuccessToast, setResetSuccessToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const showNotification = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 3500);
+  };
 
   const handleSaveName = () => {
     onUpdateProfile({ ...profile, name: userName });
-    alert("Profile name updated!");
+    showNotification("Profile display name saved successfully.");
   };
 
   const handleConfirmFullReset = () => {
     onResetAllData();
     setShowResetModal(false);
-    setResetSuccessToast(true);
-    setTimeout(() => setResetSuccessToast(false), 4000);
+    showNotification("All learning progress, virtual capital, and logs have been reset.");
   };
 
   return (
-    <div className="space-y-6 pb-20 md:pb-8 relative">
+    <div className="space-y-6 pb-24 md:pb-12 relative">
+      
       {/* Toast Notification */}
-      {resetSuccessToast && (
-        <div className="fixed top-20 right-6 z-50 bg-emerald-500 text-black px-5 py-3 rounded-2xl shadow-2xl font-black text-xs flex items-center gap-2 animate-bounce">
-          <Check className="w-5 h-5" />
-          <span>All learning progress, investments, and test scores have been reset to the beginning!</span>
+      {toastMessage && (
+        <div className="fixed top-20 right-6 z-50 bg-slate-900 dark:bg-[#11151A] text-white px-4 py-3 rounded-xl shadow-2xl border border-blue-500/40 font-mono text-xs flex items-center gap-2 animate-in slide-in-from-top">
+          <Check className="w-4 h-4 text-emerald-400" />
+          <span>{toastMessage}</span>
         </div>
       )}
 
       {/* Header */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm flex items-center justify-between gap-4">
-        <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-2xl bg-emerald-600 text-white flex items-center justify-center font-black text-2xl shadow-lg shadow-emerald-600/30">
-            {profile.name.charAt(0).toUpperCase()}
+      <SectionHeader
+        kicker="TRADER ACCREDITATION & IDENTITY"
+        title="USER IDENTITY & CREDENTIALS"
+        description="Personal investment profile, academic certifications, behavioral DNA telemetry, and data persistence controls."
+      />
+
+      {/* Profile Overview Card */}
+      <LuxuryPanel elevated className="p-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-950 flex items-center justify-center font-display font-bold text-2xl shadow-sm border border-slate-700/50 dark:border-white">
+              {profile.name.charAt(0).toUpperCase()}
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h2 className="text-xl sm:text-2xl font-bold font-display text-slate-900 dark:text-[#F5F5F0]">
+                  {profile.name}
+                </h2>
+                <span className="px-2 py-0.5 text-xs font-mono font-medium rounded bg-blue-500/10 text-blue-600 dark:text-[#6F9BFF] border border-blue-500/20">
+                  Level {profile.level} · {profile.levelTitle}
+                </span>
+              </div>
+              <p className="text-xs font-mono text-slate-500 mt-1">
+                Virtual Balance: ₹{profile.paperBalance.toLocaleString("en-IN", { maximumFractionDigits: 0 })} · Streak: {profile.streak} Days
+              </p>
+            </div>
           </div>
 
-          <div>
-            <h1 className="text-xl font-extrabold text-slate-900 dark:text-white">
-              {profile.name}
-            </h1>
-            <p className="text-xs text-slate-500 mt-0.5">
-              {profile.experienceLevel || "Novice"} Investor • Level {profile.level} Mastery • Streak: {profile.streak} Days
-            </p>
-          </div>
+          <PrecisionButton
+            variant="danger"
+            size="sm"
+            icon={<RotateCcw className="w-3.5 h-3.5" />}
+            onClick={() => setShowResetModal(true)}
+          >
+            Reset Progress
+          </PrecisionButton>
         </div>
-
-        <button
-          onClick={() => setShowResetModal(true)}
-          className="px-4 py-2.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 font-extrabold rounded-2xl text-xs border border-rose-500/20 transition-all flex items-center gap-2"
-        >
-          <RotateCcw className="w-4 h-4" />
-          <span>Reset All Progress</span>
-        </button>
-      </div>
+      </LuxuryPanel>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Preference Settings */}
-        <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-5">
-          <h2 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            <Settings className="w-5 h-5 text-emerald-600" />
-            <span>Learning Preferences</span>
-          </h2>
+        <LuxuryPanel className="p-6 space-y-4">
+          <div className="flex items-center gap-2 pb-3 border-b border-slate-100 dark:border-white/[0.05]">
+            <Settings className="w-4 h-4 text-blue-500 dark:text-[#6F9BFF]" />
+            <h3 className="font-display font-bold text-base text-slate-900 dark:text-[#F5F5F0]">
+              Identity & Pedagogy Settings
+            </h3>
+          </div>
 
-          <div className="space-y-3">
+          <div className="space-y-4 font-mono text-xs">
             <div>
-              <label className="text-xs font-semibold text-slate-600 dark:text-slate-400">Display Name:</label>
-              <div className="flex gap-2 mt-1">
+              <label className="text-slate-400 block mb-1 uppercase text-[10px]">Display Name</label>
+              <div className="flex gap-2">
                 <input
                   type="text"
                   value={userName}
                   onChange={e => setUserName(e.target.value)}
-                  className="flex-1 p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold"
+                  className="flex-1 px-3 py-2 bg-slate-50 dark:bg-[#080A0D] border border-slate-200 dark:border-white/[0.08] rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500"
                 />
-                <button
-                  onClick={handleSaveName}
-                  className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs transition-all"
-                >
-                  Save
-                </button>
+                <PrecisionButton variant="primary" size="sm" onClick={handleSaveName}>
+                  Update
+                </PrecisionButton>
               </div>
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-slate-600 dark:text-slate-400">Preferred Explanation Mode:</label>
-              <div className="grid grid-cols-3 gap-2 mt-1">
+              <label className="text-slate-400 block mb-1 uppercase text-[10px]">Active Pedagogy Depth</label>
+              <div className="grid grid-cols-3 gap-2">
                 {(["ELI5", "Simple", "Professional"] as ExplanationMode[]).map(m => (
                   <button
                     key={m}
                     onClick={() => onSetMode(m)}
-                    className={`py-2 rounded-xl text-xs font-bold border transition-all ${
+                    className={`py-2 rounded-lg border text-center transition-all cursor-pointer ${
                       mode === m
-                        ? "bg-emerald-600 text-white border-emerald-600 shadow-sm"
-                        : "bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300"
+                        ? "bg-slate-900 dark:bg-white text-white dark:text-slate-950 font-bold border-slate-900 dark:border-white"
+                        : "bg-slate-50 dark:bg-[#080A0D] text-slate-600 dark:text-[#A5A8AE] border-slate-200 dark:border-white/[0.06]"
                     }`}
                   >
                     {m}
@@ -129,132 +155,62 @@ export const ProfileModule: React.FC<ProfileModuleProps> = ({
               </div>
             </div>
           </div>
-        </div>
+        </LuxuryPanel>
 
-        {/* Weak & Strong Topics Summary */}
-        <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-5">
-          <h2 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            <Award className="w-5 h-5 text-indigo-500" />
-            <span>Personalized Diagnostics</span>
-          </h2>
-
-          <div className="space-y-3 text-xs">
-            <div className="p-3 bg-amber-50 dark:bg-amber-950/30 rounded-xl border border-amber-200 dark:border-amber-900">
-              <span className="font-bold text-amber-800 dark:text-amber-300 block mb-1">Topics Recommended for Revision:</span>
-              <ul className="list-disc list-inside space-y-0.5 text-slate-700 dark:text-slate-300">
-                {profile.weakTopics && profile.weakTopics.length > 0 ? (
-                  profile.weakTopics.map((t, i) => <li key={i}>{t}</li>)
-                ) : (
-                  <li>Stock Market Basics & Order Types</li>
-                )}
-              </ul>
-            </div>
-
-            <div className="p-3 bg-emerald-50 dark:bg-emerald-950/30 rounded-xl border border-emerald-200 dark:border-emerald-900">
-              <span className="font-bold text-emerald-800 dark:text-emerald-300 block mb-1">Mastered Topics:</span>
-              <ul className="list-disc list-inside space-y-0.5 text-slate-700 dark:text-slate-300">
-                {profile.strongTopics && profile.strongTopics.length > 0 ? (
-                  profile.strongTopics.map((t, i) => <li key={i}>{t}</li>)
-                ) : (
-                  <li>None yet — Complete lessons to unlock mastered topics!</li>
-                )}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* DEDICATED RESET EVERYTHING CARD */}
-      <div className="bg-rose-950/20 border border-rose-500/30 rounded-2xl p-6 space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="p-3 bg-rose-500/20 text-rose-400 rounded-2xl border border-rose-500/30 shrink-0">
-              <RotateCcw className="w-6 h-6" />
-            </div>
-            <div>
-              <h3 className="text-base font-extrabold text-white">Reset Account & Start From Beginning</h3>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Wipe all learning progress, school certifications, test scores, paper trading positions, and investment logs to restart fresh.
-              </p>
-            </div>
+        {/* Certifications Card */}
+        <LuxuryPanel className="p-6 space-y-4">
+          <div className="flex items-center gap-2 pb-3 border-b border-slate-100 dark:border-white/[0.05]">
+            <Award className="w-4 h-4 text-emerald-500 dark:text-[#6EE7B7]" />
+            <h3 className="font-display font-bold text-base text-slate-900 dark:text-[#F5F5F0]">
+              Verified Institutional Accreditations
+            </h3>
           </div>
 
-          <button
-            onClick={() => setShowResetModal(true)}
-            className="px-5 py-3 bg-rose-600 hover:bg-rose-500 text-white font-extrabold rounded-2xl text-xs transition-all shadow-lg shadow-rose-600/20 flex items-center justify-center gap-2 whitespace-nowrap"
-          >
-            <Trash2 className="w-4 h-4" />
-            <span>Reset All Things</span>
-          </button>
-        </div>
+          <div className="space-y-2">
+            {profile.certifications && profile.certifications.length > 0 ? (
+              profile.certifications.map((cert, idx) => (
+                <div key={idx} className="p-3 rounded-lg bg-slate-50 dark:bg-[#080A0D] border border-slate-200 dark:border-white/[0.06] flex items-center justify-between text-xs font-mono">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                    <span className="font-medium text-slate-900 dark:text-white">{cert}</span>
+                  </div>
+                  <span className="text-[10px] text-emerald-600 dark:text-[#6EE7B7]">ISSUED</span>
+                </div>
+              ))
+            ) : (
+              <div className="p-4 rounded-lg bg-slate-50 dark:bg-[#080A0D] text-slate-400 text-xs font-mono text-center">
+                Pass school graduation exams in Market University to earn verifiable accreditations.
+              </div>
+            )}
+          </div>
+        </LuxuryPanel>
       </div>
 
-      {/* FULL RESET CONFIRMATION MODAL */}
+      {/* Confirmation Modal */}
       {showResetModal && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-rose-500/40 rounded-3xl max-w-lg w-full p-6 space-y-5 shadow-2xl relative animate-in fade-in zoom-in duration-200">
-            <button
-              onClick={() => setShowResetModal(false)}
-              className="absolute top-4 right-4 p-2 rounded-full bg-slate-800 text-slate-400 hover:text-white transition-colors"
-            >
-              <X className="w-5 h-5" />
-            </button>
-
-            <div className="flex items-center gap-3">
-              <div className="p-3 rounded-2xl bg-rose-500/20 text-rose-400 border border-rose-500/30">
-                <AlertTriangle className="w-6 h-6" />
-              </div>
-              <div>
-                <span className="text-[10px] uppercase font-extrabold text-rose-400 tracking-wider">
-                  Danger Zone Action
-                </span>
-                <h3 className="text-lg font-black text-white">Reset All Progress & Investments?</h3>
-              </div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in">
+          <LuxuryPanel elevated className="max-w-md w-full p-6 space-y-4">
+            <div className="flex items-center gap-3 text-rose-600 dark:text-[#FF7B86]">
+              <AlertTriangle className="w-6 h-6 shrink-0" />
+              <h3 className="text-base font-bold font-display text-slate-900 dark:text-white">
+                Reset All Progress & Capital?
+              </h3>
             </div>
-
-            <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 text-xs text-slate-300 space-y-2">
-              <p className="font-bold text-rose-300">This will permanently reset your profile state to the beginning:</p>
-              <ul className="space-y-1.5 list-disc list-inside text-slate-400">
-                <li><strong className="text-white">Learning & Progression:</strong> Resets all completed lessons, school certifications, exam scores, and reverts mastery to <span className="text-emerald-400">Level 1 Novice</span>.</li>
-                <li><strong className="text-white">Paper Portfolio:</strong> Clears all open paper positions, execution trades, and restores starting cash balance to <span className="text-emerald-400">₹10,00,000</span>.</li>
-                <li><strong className="text-white">Diagnostics & Journal:</strong> Wipes trading journal entries, behavioral weakness logs, and strategy DNA history.</li>
-              </ul>
-            </div>
-
-            <div className="flex items-center gap-3 pt-2">
-              <button
-                onClick={() => setShowResetModal(false)}
-                className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded-xl transition-all"
-              >
+            <p className="text-xs text-slate-600 dark:text-[#A5A8AE] leading-relaxed">
+              This action will reset your paper trading balance back to ₹10,00,000, clear trade history, reset lesson progress, and zero test scores. This cannot be undone.
+            </p>
+            <div className="flex items-center justify-end gap-2 pt-2">
+              <PrecisionButton variant="secondary" size="sm" onClick={() => setShowResetModal(false)}>
                 Cancel
-              </button>
-
-              <button
-                onClick={handleConfirmFullReset}
-                className="flex-1 py-3 bg-rose-600 hover:bg-rose-500 text-white font-extrabold text-xs rounded-xl shadow-lg shadow-rose-600/30 transition-all flex items-center justify-center gap-2"
-              >
-                <RefreshCw className="w-4 h-4" />
-                <span>Yes, Reset Everything</span>
-              </button>
+              </PrecisionButton>
+              <PrecisionButton variant="danger" size="sm" onClick={handleConfirmFullReset}>
+                Confirm Full Reset
+              </PrecisionButton>
             </div>
-          </div>
+          </LuxuryPanel>
         </div>
       )}
 
-      {/* Safety & Educational Legal Disclaimer Card */}
-      <div className="bg-slate-900 text-slate-300 rounded-2xl p-6 border border-slate-800 space-y-2 text-xs leading-relaxed">
-        <div className="flex items-center gap-2 text-amber-400 font-bold text-sm">
-          <ShieldAlert className="w-5 h-5" />
-          <span>Educational Platform & Safety Disclaimer</span>
-        </div>
-        <p>
-          StockMentor is exclusively an educational and learning simulation platform. All financial definitions, AI tutoring answers, paper trading balance, simulated stock research reports, news interpretations, and quiz evaluations are created for teaching investment reasoning logic and market fundamentals.
-        </p>
-        <p className="text-slate-400">
-          Nothing contained within StockMentor constitutes personalized financial, tax, legal, or investment advice, or a recommendation to buy, hold, or sell any security. Always conduct independent research or consult a licensed financial advisor before making real capital decisions.
-        </p>
-      </div>
     </div>
   );
 };
-

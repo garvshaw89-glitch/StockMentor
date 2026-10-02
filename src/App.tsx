@@ -27,6 +27,10 @@ import { BacktestingLab } from "./components/BacktestingLab";
 import { PortfolioDoctor } from "./components/PortfolioDoctor";
 import { FinancialTranslator } from "./components/FinancialTranslator";
 import { SocraticDrawer } from "./components/SocraticDrawer";
+import { ThreeBackground } from "./components/ui/ThreeBackground";
+import { AmbientField } from "./components/ui/AmbientField";
+import { CustomCursor } from "./components/ui/CustomCursor";
+import { CommandPalette } from "./components/ui/CommandPalette";
 import { Brain } from "lucide-react";
 
 export function App() {
@@ -37,7 +41,8 @@ export function App() {
   const [positions, setPositions] = useState<PaperPosition[]>(loadPositions);
   const [trades, setTrades] = useState<PaperTrade[]>(loadTrades);
 
-  // Socratic Drawer State
+  // Command Palette & Socratic Drawer State
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [isSocraticOpen, setIsSocraticOpen] = useState(false);
   const [socraticQuestion, setSocraticQuestion] = useState<string | null>(null);
 
@@ -64,10 +69,6 @@ export function App() {
     saveTrades(trades);
   }, [trades]);
 
-  const toggleTheme = () => {
-    setTheme(prev => (prev === "light" ? "dark" : "light"));
-  };
-
   const handleResetAllData = () => {
     resetAllStorage();
     setProfile(FRESH_START_PROFILE);
@@ -84,8 +85,29 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 dark:bg-[#0A0C10] text-slate-900 dark:text-slate-200 transition-colors font-sans antialiased selection:bg-emerald-500 selection:text-black">
-      {/* Header */}
+    <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#050607] text-slate-900 dark:text-[#F5F5F0] transition-colors font-sans antialiased selection:bg-blue-500 selection:text-white relative">
+      
+      {/* 1. Cinematic 3D Three.js Financial Market Environment */}
+      <ThreeBackground activeTab={activeTab} />
+
+      {/* 2. Global Ambient Lighting & Vignette Field */}
+      <AmbientField />
+
+      {/* 3. Custom Desktop Cursor */}
+      <CustomCursor />
+
+      {/* 3. Command Palette (⌘K) */}
+      <CommandPalette
+        isOpen={isCommandPaletteOpen}
+        onClose={() => setIsCommandPaletteOpen(false)}
+        onNavigate={(tab) => {
+          setActiveTab(tab);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
+        onAskAI={(query) => handleOpenSocraticWithQuestion(query)}
+      />
+
+      {/* 4. Luxury Command Center Header */}
       <Header
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -94,14 +116,18 @@ export function App() {
         isDarkMode={theme === "dark"}
         setIsDarkMode={(val) => setTheme(val ? "dark" : "light")}
         profile={profile}
-        onOpenSearch={() => handleOpenSocraticWithQuestion("What stock or lesson should I explore today?")}
+        onOpenSearch={() => setIsCommandPaletteOpen(true)}
+        onOpenAIMentor={() => {
+          setSocraticQuestion(null);
+          setIsSocraticOpen(true);
+        }}
       />
 
-      {/* Navigation Bar */}
+      {/* 5. Navigation System (Desktop Sub-dock & Mobile Bottom Dock) */}
       <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      {/* Main Container */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      {/* 6. Main Viewport Container */}
+      <main className="max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 py-6 relative z-10 animate-in fade-in duration-200">
         {activeTab === "home" && (
           <HomeDashboard
             profile={profile}
@@ -273,20 +299,25 @@ export function App() {
         )}
       </main>
 
-      {/* Floating AI Tutor Button (Mobile & Desktop) */}
+      {/* 7. Floating AI Market Mentor Trigger */}
       <button
         onClick={() => {
           setSocraticQuestion(null);
           setIsSocraticOpen(true);
         }}
-        className="fixed bottom-20 md:bottom-6 right-5 z-40 px-4 py-3 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded-2xl shadow-lg shadow-emerald-500/20 transition-all transform hover:scale-105 flex items-center gap-2 text-xs"
-        aria-label="Open AI Socratic Tutor"
+        className="fixed bottom-20 lg:bottom-6 right-5 z-40 px-3.5 py-2.5 bg-slate-900/90 dark:bg-[#11151A]/90 hover:bg-slate-800 dark:hover:bg-[#15191F] text-slate-100 dark:text-[#F5F5F0] border border-slate-700/60 dark:border-white/[0.12] rounded-xl shadow-[0_8px_30px_rgba(0,0,0,0.4)] backdrop-blur-md transition-all duration-200 flex items-center gap-2.5 text-xs font-mono cursor-pointer group"
+        aria-label="Open AI Market Mentor Console"
       >
-        <Brain className="w-5 h-5 text-black" />
-        <span className="hidden sm:inline">Socratic Tutor</span>
+        <div className="relative">
+          <Brain className="w-4 h-4 text-blue-500 dark:text-[#6F9BFF]" />
+          <span className="absolute -top-1 -right-1 w-1.5 h-1.5 rounded-full bg-emerald-500 animate-beacon" />
+        </div>
+        <span className="hidden sm:inline font-semibold tracking-wider text-[11px]">
+          AI MARKET MENTOR
+        </span>
       </button>
 
-      {/* Interactive Socratic AI Drawer */}
+      {/* 8. Socratic AI Console Drawer */}
       <SocraticDrawer
         isOpen={isSocraticOpen}
         onClose={() => setIsSocraticOpen(false)}
