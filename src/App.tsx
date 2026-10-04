@@ -28,6 +28,7 @@ import { PortfolioDoctor } from "./components/PortfolioDoctor";
 import { FinancialTranslator } from "./components/FinancialTranslator";
 import { SocraticDrawer } from "./components/SocraticDrawer";
 import { MarketTicker } from "./components/MarketTicker";
+import { Footer } from "./components/Footer";
 import { ThreeBackground } from "./components/ui/ThreeBackground";
 import { AmbientField } from "./components/ui/AmbientField";
 import { CustomCursor } from "./components/ui/CustomCursor";
@@ -303,7 +304,14 @@ export function App() {
         )}
       </main>
 
-      {/* 7. Floating AI Market Mentor Trigger */}
+      {/* 7. Futuristic Luxury Terminal Footer */}
+      <Footer 
+        activeTab={activeTab} 
+        setActiveTab={setActiveTab} 
+        onOpenSocraticWithQuestion={handleOpenSocraticWithQuestion} 
+      />
+
+      {/* 8. Floating AI Market Mentor Trigger */}
       <button
         onClick={() => {
           setSocraticQuestion(null);
