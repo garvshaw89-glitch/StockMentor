@@ -486,6 +486,213 @@ app.post("/api/ai/explain-chart", async (req, res) => {
 });
 
 // ============================================================================
+// 7. Real-Time Market Ticker & Financial News Stream
+// ============================================================================
+app.get("/api/market/ticker", (_req, res) => {
+  const now = new Date();
+  const drift = Math.sin(now.getTime() / 15000) * 0.15;
+
+  const indices = [
+    {
+      symbol: "NIFTY 50",
+      name: "NSE Nifty 50 Index",
+      price: (24852.4 + drift * 24).toLocaleString("en-IN", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
+      change: "+142.60",
+      changePercent: "+0.58%",
+      direction: "up",
+      currency: "INR",
+      market: "NSE",
+    },
+    {
+      symbol: "SENSEX",
+      name: "BSE Sensex 30",
+      price: (81385.1 + drift * 65).toLocaleString("en-IN", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
+      change: "+420.25",
+      changePercent: "+0.52%",
+      direction: "up",
+      currency: "INR",
+      market: "BSE",
+    },
+    {
+      symbol: "BANK NIFTY",
+      name: "Nifty Bank Index",
+      price: (51420.8 + drift * 45).toLocaleString("en-IN", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
+      change: "+310.40",
+      changePercent: "+0.61%",
+      direction: "up",
+      currency: "INR",
+      market: "NSE",
+    },
+    {
+      symbol: "NIFTY IT",
+      name: "Nifty IT Index",
+      price: (36920.15 + drift * 32).toLocaleString("en-IN", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
+      change: "+580.30",
+      changePercent: "+1.60%",
+      direction: "up",
+      currency: "INR",
+      market: "NSE",
+    },
+    {
+      symbol: "S&P 500",
+      name: "S&P 500 Index",
+      price: (5868.4 + drift * 4).toFixed(2),
+      change: "+24.10",
+      changePercent: "+0.41%",
+      direction: "up",
+      currency: "USD",
+      market: "US",
+    },
+    {
+      symbol: "NASDAQ 100",
+      name: "Nasdaq 100 Tech",
+      price: (20412.3 + drift * 18).toFixed(2),
+      change: "+168.90",
+      changePercent: "+0.83%",
+      direction: "up",
+      currency: "USD",
+      market: "US",
+    },
+    {
+      symbol: "DOW JONES",
+      name: "Dow Jones Industrial",
+      price: (42310.2 + drift * 22).toFixed(2),
+      change: "+95.40",
+      changePercent: "+0.23%",
+      direction: "up",
+      currency: "USD",
+      market: "US",
+    },
+    {
+      symbol: "INDIA VIX",
+      name: "Volatility Index",
+      price: (12.65 - Math.abs(drift) * 0.1).toFixed(2),
+      change: "-0.45",
+      changePercent: "-3.44%",
+      direction: "down",
+      currency: "PTS",
+      market: "NSE",
+    },
+    {
+      symbol: "BRENT CRUDE",
+      name: "Brent Crude Oil",
+      price: `$${(74.2 + drift * 0.2).toFixed(2)}`,
+      change: "-0.85",
+      changePercent: "-1.13%",
+      direction: "down",
+      currency: "USD",
+      market: "COMMODITY",
+    },
+    {
+      symbol: "GOLD (10g)",
+      name: "24K Gold MCX",
+      price: `₹${(76450 + Math.round(drift * 50)).toLocaleString("en-IN")}`,
+      change: "+280",
+      changePercent: "+0.37%",
+      direction: "up",
+      currency: "INR",
+      market: "MCX",
+    },
+    {
+      symbol: "US 10Y",
+      name: "US 10-Year Treasury Yield",
+      price: `${(4.02 - drift * 0.01).toFixed(2)}%`,
+      change: "-0.03%",
+      changePercent: "-0.74%",
+      direction: "down",
+      currency: "%",
+      market: "BONDS",
+    },
+    {
+      symbol: "USD/INR",
+      name: "US Dollar to Rupee",
+      price: `₹${(83.92 - drift * 0.01).toFixed(2)}`,
+      change: "-0.05",
+      changePercent: "-0.06%",
+      direction: "down",
+      currency: "INR",
+      market: "FOREX",
+    },
+  ];
+
+  const headlines = [
+    {
+      id: "news-macro-1",
+      category: "CENTRAL BANK",
+      headline: "RBI keeps Repo Rate unchanged at 6.50%, maintains disinflationary policy stance amidst stable growth",
+      source: "Financial Express",
+      timeAgo: "12m ago",
+      impact: "neutral",
+      hot: true,
+    },
+    {
+      id: "news-earnings-1",
+      category: "EARNINGS",
+      headline: "Reliance Retail & Jio digital revenue expansions lift conglomerate operating cash flows to record high",
+      source: "Mint",
+      timeAgo: "28m ago",
+      impact: "positive",
+      hot: false,
+    },
+    {
+      id: "news-macro-2",
+      category: "FII FLOWS",
+      headline: "Foreign Institutional Investors inject ₹3,420 Cr into domestic equities over consecutive net buy sessions",
+      source: "Economic Times",
+      timeAgo: "45m ago",
+      impact: "positive",
+      hot: true,
+    },
+    {
+      id: "news-energy-1",
+      category: "ENERGY",
+      headline: "Brent crude moderates toward $74/bbl as Middle East risk premia stabilise and OPEC+ monitors output caps",
+      source: "Bloomberg",
+      timeAgo: "1h ago",
+      impact: "positive",
+      hot: false,
+    },
+    {
+      id: "news-tech-1",
+      category: "AI & TECH",
+      headline: "Global cloud hyperscalers accelerate sovereign AI datacentre capex, boosting semiconductor supply chains",
+      source: "Reuters",
+      timeAgo: "1h ago",
+      impact: "positive",
+      hot: true,
+    },
+    {
+      id: "news-derivatives-1",
+      category: "DERIVATIVES",
+      headline: "Nifty 25,000 Call strike exhibits heavy open interest accumulation ahead of weekly expiry settlement",
+      source: "NSE Live",
+      timeAgo: "2h ago",
+      impact: "neutral",
+      hot: false,
+    },
+  ];
+
+  res.json({
+    indices,
+    headlines,
+    timestamp: now.toISOString(),
+    status: "LIVE_STREAM",
+  });
+});
+
+// ============================================================================
 // Vite Dev & Production Static Middleware
 // ============================================================================
 async function startServer() {

@@ -27,6 +27,7 @@ import { BacktestingLab } from "./components/BacktestingLab";
 import { PortfolioDoctor } from "./components/PortfolioDoctor";
 import { FinancialTranslator } from "./components/FinancialTranslator";
 import { SocraticDrawer } from "./components/SocraticDrawer";
+import { MarketTicker } from "./components/MarketTicker";
 import { ThreeBackground } from "./components/ui/ThreeBackground";
 import { AmbientField } from "./components/ui/AmbientField";
 import { CustomCursor } from "./components/ui/CustomCursor";
@@ -126,7 +127,10 @@ export function App() {
       {/* 5. Navigation System (Desktop Sub-dock & Mobile Bottom Dock) */}
       <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      {/* 6. Main Viewport Container */}
+      {/* 6. Real-Time Market Ticker (Major Indices & Financial News Headlines Marquee) */}
+      <MarketTicker onOpenSocraticWithQuestion={handleOpenSocraticWithQuestion} />
+
+      {/* 7. Main Viewport Container */}
       <main className="max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 py-6 relative z-10 animate-in fade-in duration-200">
         {activeTab === "home" && (
           <HomeDashboard

@@ -136,6 +136,39 @@
   animation: beacon-pulse 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
+/* Smooth Horizontal Market Ticker Marquee */
+@keyframes ticker-slide {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee-smooth {
+  display: flex;
+  width: max-content;
+  animation: ticker-slide 65s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-smooth:hover {
+  animation-play-state: paused;
+}
+
+.animation-paused {
+  animation-play-state: paused !important;
+}
+
+.animation-fast {
+  animation-duration: 35s !important;
+}
+
+.animation-slow {
+  animation-duration: 95s !important;
+}
+
 /* Custom Cursor Clean Desktop Application (Non-touch devices only) */
 @media (hover: hover) and (pointer: fine) {
   body, button, a, input, textarea, select, [role="button"] {
