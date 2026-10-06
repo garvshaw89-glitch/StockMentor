@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ExplanationMode, TabType, UserProfile } from "../types";
 import { ActivityChart } from "./ActivityChart";
 import { StockMentorJourneyHeader } from "./StockMentorJourneyHeader";
+import { MarketHeatmap } from "./MarketHeatmap";
 import { getRecommendedLesson } from "../utils/curriculumUtils";
 import { 
   LuxuryPanel, 
@@ -134,7 +135,15 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({
       />
 
       {/* ================================================================ */}
-      {/* 3. Asymmetric Main Intelligence Layout */}
+      {/* 3. Real-Time Market Sector Treemap Heatmap */}
+      {/* ================================================================ */}
+      <MarketHeatmap 
+        onOpenSocraticWithQuestion={onOpenSocraticWithQuestion}
+        setActiveTab={setActiveTab}
+      />
+
+      {/* ================================================================ */}
+      {/* 4. Asymmetric Main Intelligence Layout */}
       {/* ================================================================ */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { UserProfile } from "../types";
 import { STOCKS_DATA } from "../data/stocks";
 import { NEWS_ARTICLES, SCENARIO_SIMULATIONS } from "../data/challenges";
+import { PortfolioPriceAlerts } from "./PortfolioPriceAlerts";
 import { 
   LuxuryPanel, 
   IntelligenceCard, 
@@ -23,7 +24,9 @@ import {
   ShieldAlert,
   ArrowRight,
   Activity,
-  BarChart3
+  BarChart3,
+  Bell,
+  BellRing
 } from "lucide-react";
 
 interface PortfolioModuleProps {
@@ -31,7 +34,7 @@ interface PortfolioModuleProps {
   onOpenSocraticWithQuestion: (q: string) => void;
 }
 
-type PortfolioSection = "OVERVIEW" | "ALLOCATION" | "WATCHLIST" | "SCENARIOS" | "NEWS_ANALYZER";
+type PortfolioSection = "OVERVIEW" | "PRICE_ALERTS" | "ALLOCATION" | "WATCHLIST" | "SCENARIOS" | "NEWS_ANALYZER";
 
 export const PortfolioModule: React.FC<PortfolioModuleProps> = ({
   profile,
@@ -70,6 +73,7 @@ export const PortfolioModule: React.FC<PortfolioModuleProps> = ({
 
   const sections: { id: PortfolioSection; label: string }[] = [
     { id: "OVERVIEW", label: "PORTFOLIO OVERVIEW" },
+    { id: "PRICE_ALERTS", label: "PRICE ALERTS 🔔" },
     { id: "ALLOCATION", label: "ALLOCATION & RISK" },
     { id: "WATCHLIST", label: `WATCHLIST (${profile.savedWatchlist.length})` },
     { id: "SCENARIOS", label: "MACRO SCENARIOS" },
@@ -206,7 +210,43 @@ export const PortfolioModule: React.FC<PortfolioModuleProps> = ({
               </div>
             </div>
           </LuxuryPanel>
+
+          {/* Real-time Price Alerts Quick Access Banner */}
+          <div className="p-4 rounded-xl bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-transparent border border-blue-500/20 dark:border-[#6F9BFF]/25 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded-xl bg-blue-500/20 text-blue-600 dark:text-[#6F9BFF] border border-blue-500/30">
+                <BellRing className="w-5 h-5 animate-pulse" />
+              </div>
+              <div>
+                <h4 className="font-mono text-xs sm:text-sm font-bold text-slate-900 dark:text-white uppercase tracking-tight">
+                  Real-Time Price Target Alerting Active
+                </h4>
+                <p className="text-xs text-slate-600 dark:text-[#A5A8AE] font-sans">
+                  Set target thresholds with desktop push notifications and Socratic execution triggers.
+                </p>
+              </div>
+            </div>
+
+            <PrecisionButton
+              variant="secondary"
+              size="sm"
+              icon={<Bell className="w-3.5 h-3.5" />}
+              onClick={() => setActiveSection("PRICE_ALERTS")}
+            >
+              Configure Target Alerts
+            </PrecisionButton>
+          </div>
         </div>
+      )}
+
+      {/* ================================================================ */}
+      {/* 2.5 Section: Real-Time Price Alerts */}
+      {/* ================================================================ */}
+      {activeSection === "PRICE_ALERTS" && (
+        <PortfolioPriceAlerts
+          onOpenSocraticWithQuestion={onOpenSocraticWithQuestion}
+          savedWatchlist={profile.savedWatchlist}
+        />
       )}
 
       {/* ================================================================ */}
@@ -272,7 +312,7 @@ export const PortfolioModule: React.FC<PortfolioModuleProps> = ({
                     </span>
                   </div>
 
-                  <div className="text-right">
+                  <div className="text-right flex flex-col items-end gap-1">
                     <span className="font-bold text-sm text-slate-900 dark:text-white block">
                       ₹{stock.price.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                     </span>
@@ -281,6 +321,14 @@ export const PortfolioModule: React.FC<PortfolioModuleProps> = ({
                     }`}>
                       {stock.change >= 0 ? "+" : ""}{stock.change} ({stock.changePercent}%)
                     </span>
+                    <button
+                      onClick={() => setActiveSection("PRICE_ALERTS")}
+                      className="mt-1 flex items-center gap-1 text-[10px] text-blue-600 dark:text-[#6F9BFF] hover:underline cursor-pointer"
+                      title="Configure target price alert"
+                    >
+                      <Bell className="w-3 h-3" />
+                      <span>Set Alert</span>
+                    </button>
                   </div>
                 </div>
               );
